@@ -599,11 +599,12 @@ function setMode(m) {
     document.getElementById('p1-label').textContent = 'Player 1';
     document.getElementById('p2-label').textContent = 'Player 2';
     keyMap.classList.add('visible');
-    p2streak.style.display = 'none'; // hidden until streak activates via updateStreak
+    p2streak.style.display = '';
   } else if (m === 'ai') {
     document.getElementById('p1-label').textContent = 'You';
     document.getElementById('p2-label').textContent = 'AI Bot';
     keyMap.classList.remove('visible');
+    p2streak.style.display = '';
   } else {
     document.getElementById('p1-label').textContent = 'Score';
     keyMap.classList.remove('visible');
@@ -711,8 +712,7 @@ function whack(index, player) {
 
 function updateStreak(player) {
   const s = streaks[player];
-  // P2 streak box only shows in 2player mode; P2 in AI mode doesn't get a streak display
-  if (player === 1 && mode !== '2player') return;
+  if (player === 1 && mode === 'solo') return;
   const box = document.getElementById(player === 0 ? 'streak-box' : 'streak-box-p2');
   if (!box) return;
   box.querySelector('.streak-num').textContent = s;
@@ -725,8 +725,11 @@ function showHitText(index, player, points) {
   const hole = getHole(index);
   const txt = document.createElement('div');
   txt.className = 'hit-text ' + (player === 0 ? 'p1' : 'p2');
-  if (player === 1 && mode === 'ai') {
-    txt.textContent = 'BOT +1';
+  if (player === 1 && mode === 'ai' && points >= 3) {
+    txt.textContent = `BOT +${points} 🔥`;
+    txt.style.fontSize = '1.8em';
+  } else if (player === 1 && mode === 'ai') {
+    txt.textContent = points === 2 ? `BOT +${points} ×2` : `BOT +1`;
   } else if (points >= 3) {
     txt.textContent = `+${points} 🔥`;
     txt.style.fontSize = '1.8em';
@@ -778,7 +781,7 @@ function popMole() {
   }, upTime);
 
   if (mode === 'ai' && running) {
-    const aiDelay = upTime * (0.35 + Math.random() * 0.35);
+    const aiDelay = upTime * (0.65 + Math.random() * 0.25);
     setTimeout(() => { if (running && activeMoles.has(index)) whack(index, 1); }, aiDelay);
   }
 }
