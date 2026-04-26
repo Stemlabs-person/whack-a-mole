@@ -1485,133 +1485,24 @@ function playMiss() {
   } catch(e){}
 }
 
-// --- Background Music (Baile Funk / Batidão) ---
-const BPM      = 150;
-const STEP_SEC = 60 / BPM / 4; // 16th note
+// --- Background Music (NO BATIDO.mp3) ---
+const bgMusic = new Audio('NO BATIDO.mp3');
+bgMusic.loop = true;
+bgMusic.volume = 0.7;
 
-// Tamborzão kick pattern (16 steps)
-const KICK  = [1,0,0,1, 0,1,0,0, 1,0,0,1, 0,1,0,0];
-// Snare/clap on 3 and 7 (8th note offset)
-const SNARE = [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0];
-// Closed hi-hat every step, open on 4 and 12
-const HIHAT = [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1];
-const HIOPEN= [0,0,0,1, 0,0,0,0, 0,0,0,1, 0,0,0,0];
-// Funk bass line
-const BASS_NOTES = [
-  65.41,0,65.41,0,   0,73.42,0,65.41,
-  0,0,55.00,0,       0,61.74,0,0,
-];
-
-let musicPlaying    = false;
-let musicScheduler  = null;
-let musicMasterGain = null;
-let musicStep       = 0;
-let musicNextTime   = 0;
-
-function makeNoise(ctx) {
-  const buf = ctx.createBuffer(1, ctx.sampleRate * 0.15, ctx.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-  const src = ctx.createBufferSource();
-  src.buffer = buf;
-  return src;
-}
-
-function scheduleKick(time) {
-  try {
-    const ctx  = getAudioCtx();
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(musicMasterGain);
-    osc.frequency.setValueAtTime(180, time);
-    osc.frequency.exponentialRampToValueAtTime(40, time + 0.08);
-    gain.gain.setValueAtTime(1.2, time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
-    osc.start(time); osc.stop(time + 0.18);
-  } catch(e) {}
-}
-
-function scheduleSnare(time) {
-  try {
-    const ctx   = getAudioCtx();
-    const noise = makeNoise(ctx);
-    const filter= ctx.createBiquadFilter();
-    const gain  = ctx.createGain();
-    filter.type = 'bandpass'; filter.frequency.value = 1800; filter.Q.value = 0.8;
-    noise.connect(filter); filter.connect(gain); gain.connect(musicMasterGain);
-    gain.gain.setValueAtTime(0.55, time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
-    noise.start(time); noise.stop(time + 0.12);
-  } catch(e) {}
-}
-
-function scheduleHihat(time, open) {
-  try {
-    const ctx   = getAudioCtx();
-    const noise = makeNoise(ctx);
-    const filter= ctx.createBiquadFilter();
-    const gain  = ctx.createGain();
-    filter.type = 'highpass'; filter.frequency.value = 7000;
-    noise.connect(filter); filter.connect(gain); gain.connect(musicMasterGain);
-    const dur = open ? 0.12 : 0.03;
-    gain.gain.setValueAtTime(0.18, time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-    noise.start(time); noise.stop(time + dur);
-  } catch(e) {}
-}
-
-function scheduleBass(freq, time) {
-  try {
-    const ctx  = getAudioCtx();
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const filt = ctx.createBiquadFilter();
-    filt.type = 'lowpass'; filt.frequency.value = 400;
-    osc.connect(filt); filt.connect(gain); gain.connect(musicMasterGain);
-    osc.type = 'sawtooth';
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.7, time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + STEP_SEC * 1.8);
-    osc.start(time); osc.stop(time + STEP_SEC * 1.8);
-  } catch(e) {}
-}
-
-function scheduleMusicLoop() {
-  if (!musicPlaying) return;
-  const ctx = getAudioCtx();
-  while (musicNextTime < ctx.currentTime + 0.25) {
-    const i = musicStep % 16;
-    if (KICK[i])         scheduleKick(musicNextTime);
-    if (SNARE[i])        scheduleSnare(musicNextTime);
-    if (HIOPEN[i])       scheduleHihat(musicNextTime, true);
-    else if (HIHAT[i])   scheduleHihat(musicNextTime, false);
-    if (BASS_NOTES[i])   scheduleBass(BASS_NOTES[i], musicNextTime);
-    musicNextTime += STEP_SEC;
-    musicStep++;
-  }
-  musicScheduler = setTimeout(scheduleMusicLoop, 60);
-}
+let musicPlaying = false;
 
 function startMusic() {
   if (musicPlaying) return;
-  try {
-    const ctx = getAudioCtx();
-    musicMasterGain = ctx.createGain();
-    musicMasterGain.gain.value = 0.7;
-    musicMasterGain.connect(ctx.destination);
-    musicPlaying  = true;
-    musicStep     = 0;
-    musicNextTime = ctx.currentTime + 0.05;
-    scheduleMusicLoop();
-    updateMusicBtn();
-  } catch(e) {}
+  bgMusic.play().catch(() => {});
+  musicPlaying = true;
+  updateMusicBtn();
 }
 
 function stopMusic() {
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
   musicPlaying = false;
-  clearTimeout(musicScheduler);
-  try { if (musicMasterGain) musicMasterGain.disconnect(); } catch(e){}
-  musicMasterGain = null;
   updateMusicBtn();
 }
 
