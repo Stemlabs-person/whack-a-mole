@@ -1410,26 +1410,10 @@ document.addEventListener('keydown', (e) => {
 
 const JSONBIN_KEY = '$2a$10$XaIuMmDaYC4h.UGw60oHsO.FghrnNmP3YDGZD9O6kXx88tSngSnBW';
 const JSONBIN_BIN_ID_KEY = 'wam-bin-id';
+const JSONBIN_HARDCODED_BIN_ID = '69ee57b936566621a8f403c5';
 
 async function getOrCreateBinId() {
-  let binId = localStorage.getItem(JSONBIN_BIN_ID_KEY);
-  if (binId) return binId;
-  try {
-    const res = await fetch('https://api.jsonbin.io/v3/b', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_KEY,
-        'X-Bin-Name': 'whack-a-mole-leaderboard',
-        'X-Bin-Private': 'false',
-      },
-      body: JSON.stringify({ leaderboard: [] }),
-    });
-    const data = await res.json();
-    binId = data.metadata.id;
-    localStorage.setItem(JSONBIN_BIN_ID_KEY, binId);
-    return binId;
-  } catch(e) { return null; }
+  return JSONBIN_HARDCODED_BIN_ID;
 }
 
 // --- JSONBin Leaderboard ---
