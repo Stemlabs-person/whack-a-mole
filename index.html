@@ -893,6 +893,16 @@
   .skin-card-btn.equipped-label { background: rgba(255,179,71,0.2); color: #ffb347; border: 1px solid rgba(255,179,71,0.5); cursor: default; }
   .skin-card-btn.vip-only { background: rgba(255,215,0,0.15); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); cursor: default; font-size: 0.65em; }
 
+  /* VIP+ badge */
+  .vip-plus-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    border-radius: 20px; padding: 2px 8px 2px 4px;
+    font-size: 0.78em; font-weight: bold; color: #1a1a1a;
+    vertical-align: middle; margin-left: 4px;
+  }
+  .vip-plus-badge img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; }
+
   /* VIP card in shop */
   .vip-shop-card {
     background: rgba(255,215,0,0.08);
@@ -922,7 +932,8 @@
   #shop-close-btn:hover { background: rgba(255,255,255,0.2); }
 
   /* VIP badge in leaderboard */
-  .vip-badge { color: #ffb347; font-size: 0.85em; margin-left: 4px; }
+  .vip-badge { display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#ffd700,#ff8c00);border-radius:12px;padding:1px 6px 1px 3px;font-size:0.72em;font-weight:bold;color:#1a1a1a;margin-left:4px;vertical-align:middle; }
+  .vip-badge img { width:13px;height:13px;border-radius:50%;object-fit:cover; }
 
   /* ── Daily Spin ── */
   #spin-overlay, #boss-overlay, #code-overlay {
@@ -1039,6 +1050,7 @@
     <button class="mode-btn active" data-mode="solo"    onclick="setMode('solo')">Solo</button>
     <button class="mode-btn"        data-mode="story"   onclick="setMode('story')">📖 Story</button>
     <button class="mode-btn"        data-mode="duels"   onclick="toggleDuels()">⚔️ vs Duels ▾</button>
+    <button class="mode-btn" data-mode="frenzy" onclick="setMode('frenzy')" id="frenzy-mode-btn" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold"><img src="vip+ logo.png" style="width:14px;height:14px;border-radius:50%;vertical-align:middle;margin-right:3px"> VIP+ Frenzy</button>
   </div>
   <div id="duels-submenu">
     <button class="mode-btn" data-mode="2player" onclick="setMode('2player')">👥 2 Players</button>
@@ -1166,6 +1178,7 @@
       <button class="shop-tab active" onclick="switchShopTab('hammers')">🔨 Hammers</button>
       <button class="shop-tab"        onclick="switchShopTab('themes')">🎨 Themes</button>
       <button class="shop-tab"        onclick="switchShopTab('vip')">👑 VIP</button>
+      <button class="shop-tab"        onclick="switchShopTab('vipplus')" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold;border-radius:8px"><img src="vip+ logo.png" style="width:13px;height:13px;border-radius:50%;vertical-align:middle;margin-right:3px">VIP+</button>
     </div>
     <div id="shop-hammers" class="shop-section active">
       <div class="shop-grid" id="hammer-grid"></div>
@@ -1175,6 +1188,9 @@
     </div>
     <div id="shop-vip" class="shop-section">
       <div class="vip-shop-card" id="vip-card-content"></div>
+    </div>
+    <div id="shop-vipplus" class="shop-section">
+      <div class="vip-shop-card" id="vipplus-card-content" style="border-color:rgba(255,140,0,0.7);background:rgba(255,140,0,0.08)"></div>
     </div>
     <button id="shop-close-btn" onclick="closeShop()">✕ Close</button>
   </div>
@@ -1279,6 +1295,7 @@ const THEMES = [
 
 let totalCoins      = parseInt(localStorage.getItem('wam-coins') || '0');
 let isVip           = localStorage.getItem('wam-vip') === 'true';
+let isVipPlus       = localStorage.getItem('wam-vipplus') === 'true';
 let ownedItems      = JSON.parse(localStorage.getItem('wam-owned') || '["wooden","meadow"]');
 let equippedHammer  = localStorage.getItem('wam-hammer') || 'wooden';
 let equippedTheme   = localStorage.getItem('wam-theme')  || 'meadow';
@@ -1311,7 +1328,7 @@ let currentShopTab = 'hammers';
 function switchShopTab(tab) {
   currentShopTab = tab;
   document.querySelectorAll('.shop-tab').forEach((b, i) => {
-    b.classList.toggle('active', ['hammers','themes','vip'][i] === tab);
+    b.classList.toggle('active', ['hammers','themes','vip','vipplus'][i] === tab);
   });
   document.querySelectorAll('.shop-section').forEach(s => s.classList.remove('active'));
   document.getElementById('shop-' + tab).classList.add('active');
@@ -1380,6 +1397,36 @@ function renderShop() {
       <div class="skin-card-price" style="color:rgba(255,255,255,0.7);font-size:0.8em;line-height:1.6">2× score multiplier on every hit<br>👑 Badge on the leaderboard<br>✨ Exclusive Golden Hammer unlocked</div>
       <button class="skin-card-btn buy" style="font-size:0.9em;padding:8px 20px;margin-top:4px" ${canAfford?'':'disabled'} onclick="buyVip()">${canAfford?'🪙 10,000 coins — Buy!':'Need '+(10000-totalCoins).toLocaleString()+' more coins'}</button>`;
   }
+
+  // VIP+ card
+  const vpc = document.getElementById('vipplus-card-content');
+  if (vpc) {
+    if (isVipPlus) {
+      vpc.innerHTML = `
+        <img src="vip+ logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid #ff8c00;object-fit:cover;margin-bottom:4px">
+        <div class="skin-card-name" style="font-size:1.3em;color:#ff8c00">YOU ARE VIP+!</div>
+        <div class="skin-card-price" style="color:rgba(255,255,255,0.8);font-size:0.82em;line-height:1.8;text-align:center">
+          3× score multiplier · VIP+ leaderboard badge<br>
+          ✨ All VIP perks included<br>
+          ⚡ Frenzy mode unlocked<br>
+          ⏱️ +15 bonus seconds per game<br>
+          🎨 Exclusive VIP+ mole skins
+        </div>`;
+    } else {
+      const canAffordVipPlus = getCoins() >= 25000;
+      vpc.innerHTML = `
+        <img src="vip+ logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid rgba(255,140,0,0.5);object-fit:cover;margin-bottom:4px;opacity:0.7">
+        <div class="skin-card-name" style="font-size:1.3em;color:#ff8c00">VIP+</div>
+        <div class="skin-card-price" style="color:rgba(255,255,255,0.7);font-size:0.8em;line-height:1.8;text-align:center">
+          3× score multiplier · VIP+ leaderboard badge<br>
+          ✨ All VIP perks included<br>
+          ⚡ Frenzy mode unlocked<br>
+          ⏱️ +15 bonus seconds per game<br>
+          🎨 Exclusive VIP+ mole skins
+        </div>
+        <button class="skin-card-btn buy" style="font-size:0.9em;padding:8px 20px;margin-top:4px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a" ${canAffordVipPlus?'':'disabled'} onclick="buyVipPlus()">${canAffordVipPlus?'🪙 25,000 coins — Get VIP+!':'Need '+(25000-totalCoins).toLocaleString()+' more coins'}</button>`;
+    }
+  }
 }
 
 function buySkin(id, type) {
@@ -1418,6 +1465,18 @@ function buyVip() {
   isVip = true;
   localStorage.setItem('wam-coins', totalCoins);
   localStorage.setItem('wam-vip', 'true');
+  updateCoinDisplay();
+  renderShop();
+}
+
+function buyVipPlus() {
+  if (isVipPlus || getCoins() < 25000) return;
+  if (!isOwner()) totalCoins -= 25000;
+  isVipPlus = true;
+  isVip = true; // VIP+ includes VIP
+  localStorage.setItem('wam-coins', totalCoins);
+  localStorage.setItem('wam-vip', 'true');
+  localStorage.setItem('wam-vipplus', 'true');
   updateCoinDisplay();
   renderShop();
 }
@@ -1538,7 +1597,7 @@ function setMode(m) {
     b.classList.toggle('active', isActive);
   });
 
-  const isSolo = m === 'solo' || m === 'story';
+  const isSolo = m === 'solo' || m === 'story' || m === 'frenzy';
   document.getElementById('p2-box').style.display = isSolo ? 'none' : 'flex';
   document.getElementById('story-quest').classList.toggle('show', m === 'story');
   document.getElementById('highscore-box').style.display = m === 'story' ? 'none' : '';
@@ -1561,6 +1620,14 @@ function setMode(m) {
     document.getElementById('p1-label').textContent = 'Score';
     keyMap.classList.remove('visible');
     document.getElementById('duels-submenu').classList.remove('open');
+  }
+
+  if (m === 'frenzy') {
+    if (!isVipPlus) {
+      alert('⚡ Frenzy mode is VIP+ exclusive! Unlock VIP+ in the shop.');
+      setMode('solo');
+      return;
+    }
   }
 
   if (m === 'story') {
@@ -1656,7 +1723,8 @@ function whack(index, player) {
   mole.classList.add('hit');
 
   streaks[player]++;
-  const points = streaks[player] * (isVip && player === 0 ? 2 : 1);
+  const mult = player === 0 ? (isVipPlus ? 3 : isVip ? 2 : 1) : 1;
+  const points = streaks[player] * mult;
   if (streaks[player] >= 3) playStreak(); else playHit();
   updateStreak(player);
 
@@ -1860,14 +1928,15 @@ function startGame() {
   scores = [0, 0];
   streaks = [0, 0];
   storyHits = 0;
-  timeLeft = mode === 'story' ? 30 : 60;
+  timeLeft = mode === 'story' ? 30 : mode === 'frenzy' ? 45 : isVipPlus ? 75 : 60;
   updateScores(0);
   updateTimer();
   updateStreak(0); updateStreak(1);
   document.getElementById('start-btn').disabled = true;
 
   const sp = getSpeed();
-  popInterval = setInterval(() => { if (running) popMole(); }, sp.interval);
+  const popRate = mode === 'frenzy' ? Math.round(sp.interval * 0.5) : sp.interval;
+  popInterval = setInterval(() => { if (running) popMole(); }, popRate);
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimer();
@@ -1970,7 +2039,7 @@ function resetGame() {
   scores = [0, 0];
   streaks = [0, 0];
   storyHits = 0;
-  timeLeft = 60;
+  timeLeft = (mode === 'frenzy') ? 45 : (isVipPlus ? 75 : 60);
   updateScores(0);
   updateTimer();
   updateStreak(0); updateStreak(1);
@@ -2101,7 +2170,7 @@ async function showLeaderboard() {
     tr.innerHTML = `
       <td class="lb-rank ${rankClass}">${medal}</td>
       <td style="text-align:left">
-        ${escapeHtml(entry.name)}${(entry.vip || (isMe && isVip)) ? '<span class="vip-badge">👑</span>' : ''}
+        ${escapeHtml(entry.name)}${(isMe && isVipPlus) ? '<span class="vip-badge"><img src="vip+ logo.png">VIP+</span>' : (entry.vip || (isMe && isVip)) ? '<span style="color:#ffb347;font-size:0.85em;margin-left:4px">👑</span>' : ''}
         ${showCode ? '<br><span style="font-size:0.68em;color:#2ecc71;letter-spacing:1.5px">🔑 Your code: <b style="color:#ffe066">' + top20Code + '</b></span>' : ''}
       </td>
       <td style="font-weight:bold;color:#ffe066">${entry.score}</td>
