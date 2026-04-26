@@ -861,6 +861,7 @@
       </tr></thead>
       <tbody id="lb-rows"></tbody>
     </table>
+    <div id="lb-bin-id" style="font-size:0.65em;color:rgba(255,255,255,0.35);margin-top:4px;cursor:pointer" onclick="copyBinId()" title="Click to copy Bin ID"></div>
     <button id="lb-close-btn" onclick="closeLeaderboard()">✕ Close</button>
   </div>
 </div>
@@ -1498,6 +1499,9 @@ document.getElementById('username-input').addEventListener('keydown', (e) => {
 
 async function showLeaderboard() {
   document.getElementById('leaderboard-overlay').classList.add('show');
+  const binId = localStorage.getItem(JSONBIN_BIN_ID_KEY);
+  const binEl = document.getElementById('lb-bin-id');
+  binEl.textContent = binId ? `Bin ID: ${binId}` : '';
   const tbody = document.getElementById('lb-rows');
   const table = document.getElementById('leaderboard-table');
   const empty = document.getElementById('lb-empty');
@@ -1532,6 +1536,16 @@ async function showLeaderboard() {
 
 function closeLeaderboard() {
   document.getElementById('leaderboard-overlay').classList.remove('show');
+}
+
+function copyBinId() {
+  const binId = localStorage.getItem(JSONBIN_BIN_ID_KEY);
+  if (!binId) return;
+  navigator.clipboard.writeText(binId).then(() => {
+    const el = document.getElementById('lb-bin-id');
+    el.textContent = '✔ Copied!';
+    setTimeout(() => el.textContent = `Bin ID: ${binId}`, 1500);
+  });
 }
 
 function escapeHtml(str) {
