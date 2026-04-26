@@ -2211,7 +2211,7 @@ async function showLeaderboard() {
       <td class="lb-rank ${rankClass}">${medal}</td>
       <td style="text-align:left">
         ${escapeHtml(entry.name)}${(entry.vip || (isMe && isVip)) ? '<span class="vip-badge">👑</span>' : ''}
-        ${showCode ? `<br><span style="font-size:0.68em;color:#2ecc71;letter-spacing:1px">🔑 Your code: <b style="cursor:pointer" onclick="document.getElementById('code-input')&&(openCode(),setTimeout(()=>document.getElementById('code-input').value='${top20Code}',100))">${top20Code}</b></span>` : ''}
+        ${showCode ? '<br><span style="font-size:0.68em;color:#2ecc71;letter-spacing:1.5px">🔑 Your code: <b style="color:#ffe066">' + top20Code + '</b></span>' : ''}
       </td>
       <td style="font-weight:bold;color:#ffe066">${entry.score}</td>
       <td style="font-size:0.75em;color:rgba(255,255,255,0.55)">${entry.mode}</td>`;
