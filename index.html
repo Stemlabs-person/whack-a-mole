@@ -1320,7 +1320,7 @@ function endGame() {
 
   if (mode === 'solo' && scores[0] > 0 && currentUsername) {
     const speedVal = document.getElementById('speed-select').value;
-    saveLeaderboardEntry(currentUsername, scores[0], speedVal.charAt(0).toUpperCase() + speedVal.slice(1));
+    pushScoreToJsonbin(currentUsername, scores[0], speedVal.charAt(0).toUpperCase() + speedVal.slice(1));
   }
 
   const title = document.getElementById('result-title');
@@ -1407,13 +1407,66 @@ document.addEventListener('keydown', (e) => {
   if (key in P2_KEYS) { e.preventDefault(); whack(P2_KEYS[key], 1); }
 });
 
-// --- Config: paste your Firebase Realtime Database URL here ---
-// Steps:
-//  1. Go to https://console.firebase.google.com → create a project
-//  2. Build → Realtime Database → Create database (start in test mode)
-//  3. Copy the URL (looks like https://YOUR-PROJECT-default-rtdb.firebaseio.com)
-//  4. Paste it below (keep the trailing slash)
-const FIREBASE_URL = 'https://YOUR-PROJECT-default-rtdb.firebaseio.com/';
+const JSONBIN_KEY = '$2a$10$XaIuMmDaYC4h.UGw60oHsO.FghrnNmP3YDGZD9O6kXx88tSngSnBW';
+const JSONBIN_BIN_ID_KEY = 'wam-bin-id';
+
+async function getOrCreateBinId() {
+  let binId = localStorage.getItem(JSONBIN_BIN_ID_KEY);
+  if (binId) return binId;
+  try {
+    const res = await fetch('https://api.jsonbin.io/v3/b', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY,
+        'X-Bin-Name': 'whack-a-mole-leaderboard',
+        'X-Bin-Private': 'false',
+      },
+      body: JSON.stringify({ leaderboard: [] }),
+    });
+    const data = await res.json();
+    binId = data.metadata.id;
+    localStorage.setItem(JSONBIN_BIN_ID_KEY, binId);
+    return binId;
+  } catch(e) { return null; }
+}
+
+// --- JSONBin Leaderboard ---
+
+async function pushScoreToJsonbin(name, score, modeName) {
+  try {
+    const binId = await getOrCreateBinId();
+    if (!binId) return;
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY },
+    });
+    const data = await res.json();
+    const lb = data.record.leaderboard || [];
+    lb.push({ name, score, mode: modeName, ts: Date.now() });
+    lb.sort((a, b) => b.score - a.score);
+    const top100 = lb.slice(0, 100);
+    await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY,
+      },
+      body: JSON.stringify({ leaderboard: top100 }),
+    });
+  } catch(e) { console.warn('Leaderboard save failed:', e); }
+}
+
+async function fetchLeaderboardFromJsonbin() {
+  try {
+    const binId = await getOrCreateBinId();
+    if (!binId) return [];
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY },
+    });
+    const data = await res.json();
+    return (data.record.leaderboard || []).slice(0, 20);
+  } catch(e) { return []; }
+}
 
 // --- Username ---
 let currentUsername = localStorage.getItem('wam-username') || '';
@@ -1442,37 +1495,6 @@ document.getElementById('username-input').addEventListener('keydown', (e) => {
 
 // --- Worldwide Leaderboard (Firebase Realtime Database REST) ---
 
-function isFirebaseConfigured() {
-  return FIREBASE_URL && !FIREBASE_URL.includes('YOUR-PROJECT');
-}
-
-async function pushScoreToFirebase(name, score, modeName) {
-  if (!isFirebaseConfigured()) return;
-  try {
-    await fetch(FIREBASE_URL + 'leaderboard.json', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, score, mode: modeName, ts: Date.now() }),
-    });
-  } catch (e) { console.warn('Leaderboard save failed:', e); }
-}
-
-async function fetchLeaderboard() {
-  if (!isFirebaseConfigured()) return [];
-  try {
-    const res = await fetch(
-      FIREBASE_URL + 'leaderboard.json?orderBy="score"&limitToLast=100'
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    if (!data) return [];
-    return Object.values(data).sort((a, b) => b.score - a.score).slice(0, 20);
-  } catch (e) { return []; }
-}
-
-async function saveLeaderboardEntry(name, score, modeName) {
-  await pushScoreToFirebase(name, score, modeName);
-}
 
 async function showLeaderboard() {
   document.getElementById('leaderboard-overlay').classList.add('show');
@@ -1484,14 +1506,9 @@ async function showLeaderboard() {
   table.style.display = 'none';
   empty.style.display = '';
 
-  if (!isFirebaseConfigured()) {
-    empty.innerHTML = '⚙️ Set up Firebase to enable the worldwide leaderboard.<br><small style="opacity:0.6">See the FIREBASE_URL comment in the code.</small>';
-    return;
-  }
-
   empty.textContent = 'Loading…';
 
-  const lb = await fetchLeaderboard();
+  const lb = await fetchLeaderboardFromJsonbin();
 
   if (lb.length === 0) {
     empty.textContent = 'No scores yet — be the first!';
