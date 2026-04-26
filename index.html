@@ -745,8 +745,37 @@
   #current-user-display:hover { color: #ffe066; }
   #current-user-display span { color: #ffe066; font-weight: bold; }
 
-  /* VIP hammer cursor */
-  body.vip-active, body.vip-active * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%23c0392b' stroke='%23922b21' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%237a4a1a' stroke='%235a3010' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  /* Hammer cursors */
+  body.hammer-wooden,  body.hammer-wooden  * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%237a3b10' stroke='%23522808' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%23a0622a' stroke='%23704010' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  body.hammer-silver,  body.hammer-silver  * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%23b0b8c0' stroke='%23707880' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%23889098' stroke='%23586068' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  body.hammer-golden,  body.hammer-golden  * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%23ffd700' stroke='%23b8860b' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%23c8a000' stroke='%23886a00' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  body.hammer-ice,     body.hammer-ice     * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%2387ceeb' stroke='%234a90c0' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%23b0d8f0' stroke='%2370a8d0' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  body.hammer-fire,    body.hammer-fire    * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%23ff4500' stroke='%23cc2200' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%238b4513' stroke='%235a2a08' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+  body.hammer-dark,    body.hammer-dark    * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect x='2' y='2' width='14' height='10' rx='2' fill='%23220044' stroke='%23aa00ff' stroke-width='1.5'/%3E%3Crect x='7' y='10' width='4' height='18' rx='2' fill='%23110022' stroke='%23880088' stroke-width='1'/%3E%3C/svg%3E") 2 2, auto !important; }
+
+  /* Themes */
+  body.theme-night { background: radial-gradient(ellipse at 50% 0%, #0a0a2e 0%, #1a1a4a 55%, #1a0f00 55%, #0d0800 70%, #060400 100%); }
+  body.theme-night #grid { background: rgba(0,0,50,0.45); border-color: rgba(100,100,255,0.2); }
+  body.theme-night .hole { background: radial-gradient(ellipse at 40% 35%, #1a0a3a 0%, #0a0520 60%, #050210 100%); border-color: #2a1a5a; box-shadow: inset 0 12px 30px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.5), 0 0 0 3px #150a30; }
+  body.theme-night .hole::after { background: radial-gradient(ellipse at center bottom, #2a1a4a 0%, #150a28 100%); }
+
+  body.theme-winter { background: radial-gradient(ellipse at 50% 0%, #ddeeff 0%, #b8d4f0 55%, #c8e0f8 55%, #a0c0e8 70%, #80a8d8 100%); }
+  body.theme-winter #grid { background: rgba(180,220,255,0.2); border-color: rgba(255,255,255,0.6); }
+  body.theme-winter .hole { background: radial-gradient(ellipse at 40% 35%, #5c7a90 0%, #2a4a5a 60%, #152535 100%); border-color: #a0c4e0; box-shadow: inset 0 12px 30px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.3), 0 0 0 3px #6090b8; }
+  body.theme-winter .hole::after { background: radial-gradient(ellipse at center bottom, #8ab0c8 0%, #5a8098 100%); }
+  body.theme-winter h1 { color: #1a4a7a; text-shadow: 3px 3px 0 #88b8e8, 0 0 20px rgba(100,180,255,0.5); }
+
+  body.theme-ocean { background: radial-gradient(ellipse at 50% 0%, #001a3a 0%, #003060 55%, #004080 55%, #002050 70%, #001030 100%); }
+  body.theme-ocean #grid { background: rgba(0,30,80,0.45); border-color: rgba(0,150,255,0.25); }
+  body.theme-ocean .hole { background: radial-gradient(ellipse at 40% 35%, #0a2a4a 0%, #051520 60%, #020a10 100%); border-color: #0a5080; box-shadow: inset 0 12px 30px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.4), 0 0 0 3px #04304c; }
+  body.theme-ocean .hole::after { background: radial-gradient(ellipse at center bottom, #0a3a5a 0%, #051a2a 100%); }
+  body.theme-ocean h1 { text-shadow: 3px 3px 0 #003a6a, 0 0 20px rgba(0,150,255,0.6); }
+
+  body.theme-lava { background: radial-gradient(ellipse at 50% 0%, #3a0000 0%, #6a1000 55%, #2a0800 55%, #1a0400 70%, #0a0200 100%); }
+  body.theme-lava #grid { background: rgba(100,10,0,0.45); border-color: rgba(255,60,0,0.25); }
+  body.theme-lava .hole { background: radial-gradient(ellipse at 40% 35%, #3a1000 0%, #1a0800 60%, #0a0400 100%); border-color: #8a2000; box-shadow: inset 0 12px 30px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.5), 0 0 0 3px #5a1000; }
+  body.theme-lava .hole::after { background: radial-gradient(ellipse at center bottom, #6a2000 0%, #3a1000 100%); }
+  body.theme-lava h1 { text-shadow: 3px 3px 0 #8a0000, 0 0 20px rgba(255,60,0,0.7); }
 
   /* Coin display */
   #coin-display {
@@ -778,7 +807,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.82);
+    background: rgba(0,0,0,0.85);
     z-index: 200;
     justify-content: center;
     align-items: center;
@@ -790,50 +819,93 @@
     background: linear-gradient(135deg, #1a3a5c, #2e228b);
     border: 4px solid #ffb347;
     border-radius: 24px;
-    padding: 30px 44px;
+    padding: 24px 32px;
     text-align: center;
     box-shadow: 0 0 60px rgba(255,179,71,0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
-    min-width: 320px;
+    gap: 14px;
+    width: 92vw;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
   }
   #shop-card h2 { font-size: 1.8em; color: #ffb347; text-shadow: 2px 2px 0 #5a3e00; letter-spacing: 2px; margin: 0; }
   #shop-coin-balance { font-size: 1em; color: #ffe066; font-weight: bold; }
 
-  .shop-item {
-    background: rgba(255,255,255,0.07);
+  .shop-tabs { display: flex; gap: 8px; }
+  .shop-tab {
+    padding: 7px 20px;
+    font-size: 0.88em;
+    font-weight: bold;
     border: 2px solid rgba(255,179,71,0.4);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .shop-tab.active { background: rgba(255,179,71,0.25); border-color: #ffb347; color: #ffb347; }
+
+  .shop-section { display: none; width: 100%; }
+  .shop-section.active { display: block; }
+
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  .skin-card {
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+  .skin-card.owned   { border-color: rgba(255,179,71,0.5); }
+  .skin-card.equipped { border-color: #ffb347; background: rgba(255,179,71,0.15); box-shadow: 0 0 12px rgba(255,179,71,0.3); }
+  .skin-card-icon { font-size: 1.8em; }
+  .skin-card-name { font-size: 0.78em; font-weight: bold; color: #fff; letter-spacing: 0.5px; }
+  .skin-card-price { font-size: 0.7em; color: #ffe066; }
+  .skin-card-btn {
+    margin-top: 4px;
+    padding: 5px 12px;
+    font-size: 0.72em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .skin-card-btn.buy    { background: linear-gradient(135deg, #ff9f1c, #ffb347); color: #fff; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
+  .skin-card-btn.buy:disabled { background: rgba(255,255,255,0.15); cursor: not-allowed; color: rgba(255,255,255,0.5); }
+  .skin-card-btn.equip  { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+  .skin-card-btn.equipped-label { background: rgba(255,179,71,0.2); color: #ffb347; border: 1px solid rgba(255,179,71,0.5); cursor: default; }
+  .skin-card-btn.vip-only { background: rgba(255,215,0,0.15); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); cursor: default; font-size: 0.65em; }
+
+  /* VIP card in shop */
+  .vip-shop-card {
+    background: rgba(255,215,0,0.08);
+    border: 2px solid rgba(255,215,0,0.5);
     border-radius: 16px;
-    padding: 16px 24px;
+    padding: 14px 20px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    width: 100%;
   }
-  .shop-item-icon { font-size: 2.5em; }
-  .shop-item-name { font-size: 1.2em; font-weight: bold; color: #ffb347; letter-spacing: 1px; }
-  .shop-item-desc { font-size: 0.78em; color: rgba(255,255,255,0.75); text-align: center; line-height: 1.5; }
-  #buy-vip-btn {
-    margin-top: 6px;
-    padding: 10px 28px;
-    font-size: 1em;
-    font-weight: bold;
-    background: linear-gradient(135deg, #ff9f1c, #ffb347);
-    color: #fff;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.25);
-    transition: all 0.2s;
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  }
-  #buy-vip-btn:hover:not(:disabled) { transform: scale(1.05) translateY(-1px); }
-  #buy-vip-btn:disabled { background: rgba(255,255,255,0.15); cursor: not-allowed; box-shadow: none; }
-  #vip-owned-badge { font-size: 0.9em; color: #ffe066; font-weight: bold; display: none; }
+  .vip-shop-card .skin-card-name { font-size: 1em; color: #ffd700; }
+  .vip-shop-card .skin-card-price { font-size: 0.82em; }
 
   #shop-close-btn {
     padding: 10px 28px;
@@ -979,12 +1051,19 @@
   <div id="shop-card">
     <h2>🛒 SHOP</h2>
     <div id="shop-coin-balance">🪙 <span id="shop-coin-count">0</span> coins</div>
-    <div class="shop-item">
-      <div class="shop-item-icon">👑</div>
-      <div class="shop-item-name">VIP</div>
-      <div class="shop-item-desc">2× score multiplier on every hit<br>👑 VIP badge on the leaderboard<br>🔨 Exclusive golden hammer skin</div>
-      <button id="buy-vip-btn" onclick="buyVip()">🪙 10,000 coins</button>
-      <div id="vip-owned-badge">👑 YOU ARE VIP!</div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" onclick="switchShopTab('hammers')">🔨 Hammers</button>
+      <button class="shop-tab"        onclick="switchShopTab('themes')">🎨 Themes</button>
+      <button class="shop-tab"        onclick="switchShopTab('vip')">👑 VIP</button>
+    </div>
+    <div id="shop-hammers" class="shop-section active">
+      <div class="shop-grid" id="hammer-grid"></div>
+    </div>
+    <div id="shop-themes" class="shop-section">
+      <div class="shop-grid" id="theme-grid"></div>
+    </div>
+    <div id="shop-vip" class="shop-section">
+      <div class="vip-shop-card" id="vip-card-content"></div>
     </div>
     <button id="shop-close-btn" onclick="closeShop()">✕ Close</button>
   </div>
@@ -1024,29 +1103,143 @@ const STORY_LEVELS = [
   { level:8, icon:'👹', name:'Boss Fight',    goal:'boss',  target:0,   speed:'normal', desc:'Beat the AI Boss!' },
 ];
 
-let totalCoins = parseInt(localStorage.getItem('wam-coins') || '0');
-let isVip = localStorage.getItem('wam-vip') === 'true';
+const HAMMER_SKINS = [
+  { id:'wooden',    name:'Wooden',      icon:'🔨', price:0,     vipOnly:false },
+  { id:'silver',    name:'Silver',      icon:'🪨', price:300,   vipOnly:false },
+  { id:'golden',    name:'Golden',      icon:'✨', price:0,     vipOnly:true  },
+  { id:'ice',       name:'Ice',         icon:'🧊', price:800,   vipOnly:false },
+  { id:'fire',      name:'Fire',        icon:'🔥', price:1500,  vipOnly:false },
+  { id:'dark',      name:'Dark Matter', icon:'🌑', price:4000,  vipOnly:false },
+];
+
+const THEMES = [
+  { id:'meadow', name:'Meadow', icon:'🌿', price:0    },
+  { id:'night',  name:'Night',  icon:'🌙', price:1000 },
+  { id:'winter', name:'Winter', icon:'❄️', price:2000 },
+  { id:'ocean',  name:'Ocean',  icon:'🌊', price:2500 },
+  { id:'lava',   name:'Lava',   icon:'🌋', price:3500 },
+];
+
+let totalCoins      = parseInt(localStorage.getItem('wam-coins') || '0');
+let isVip           = localStorage.getItem('wam-vip') === 'true';
+let ownedItems      = JSON.parse(localStorage.getItem('wam-owned') || '["wooden","meadow"]');
+let equippedHammer  = localStorage.getItem('wam-hammer') || 'wooden';
+let equippedTheme   = localStorage.getItem('wam-theme')  || 'meadow';
+
+function saveInventory() {
+  localStorage.setItem('wam-owned',   JSON.stringify(ownedItems));
+  localStorage.setItem('wam-hammer',  equippedHammer);
+  localStorage.setItem('wam-theme',   equippedTheme);
+}
+
+function applyEquipped() {
+  HAMMER_SKINS.forEach(s => document.body.classList.remove('hammer-' + s.id));
+  THEMES.forEach(t => document.body.classList.remove('theme-' + t.id));
+  document.body.classList.add('hammer-' + equippedHammer);
+  document.body.classList.add('theme-' + equippedTheme);
+}
 
 function updateCoinDisplay() {
   document.getElementById('coin-count').textContent = totalCoins.toLocaleString();
   document.getElementById('shop-coin-count').textContent = totalCoins.toLocaleString();
 }
 
-function openShop() {
+let currentShopTab = 'hammers';
+function switchShopTab(tab) {
+  currentShopTab = tab;
+  document.querySelectorAll('.shop-tab').forEach((b, i) => {
+    b.classList.toggle('active', ['hammers','themes','vip'][i] === tab);
+  });
+  document.querySelectorAll('.shop-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('shop-' + tab).classList.add('active');
+}
+
+function renderShop() {
   updateCoinDisplay();
-  const buyBtn = document.getElementById('buy-vip-btn');
-  const ownedBadge = document.getElementById('vip-owned-badge');
+
+  // Hammer grid
+  const hg = document.getElementById('hammer-grid');
+  hg.innerHTML = '';
+  HAMMER_SKINS.forEach(skin => {
+    const owned    = ownedItems.includes(skin.id) || (skin.vipOnly && isVip);
+    const equipped = equippedHammer === skin.id;
+    const canAfford = totalCoins >= skin.price;
+    let btnHtml = '';
+    if (skin.vipOnly && !isVip) {
+      btnHtml = `<button class="skin-card-btn vip-only" disabled>👑 VIP Only</button>`;
+    } else if (!owned) {
+      btnHtml = `<button class="skin-card-btn buy" ${canAfford ? '' : 'disabled'} onclick="buySkin('${skin.id}','hammer')">${canAfford ? `🪙 ${skin.price.toLocaleString()}` : `Need ${(skin.price-totalCoins).toLocaleString()} more`}</button>`;
+    } else if (equipped) {
+      btnHtml = `<button class="skin-card-btn equipped-label" disabled>✔ Equipped</button>`;
+    } else {
+      btnHtml = `<button class="skin-card-btn equip" onclick="equipSkin('${skin.id}','hammer')">Equip</button>`;
+    }
+    hg.innerHTML += `<div class="skin-card ${equipped?'equipped':owned?'owned':''}">
+      <div class="skin-card-icon">${skin.icon}</div>
+      <div class="skin-card-name">${skin.name}</div>
+      <div class="skin-card-price">${skin.price===0?(skin.vipOnly?'VIP':'Free'):'🪙 '+skin.price.toLocaleString()}</div>
+      ${btnHtml}
+    </div>`;
+  });
+
+  // Theme grid
+  const tg = document.getElementById('theme-grid');
+  tg.innerHTML = '';
+  THEMES.forEach(theme => {
+    const owned    = ownedItems.includes(theme.id);
+    const equipped = equippedTheme === theme.id;
+    const canAfford = totalCoins >= theme.price;
+    let btnHtml = '';
+    if (!owned) {
+      btnHtml = `<button class="skin-card-btn buy" ${canAfford?'':'disabled'} onclick="buySkin('${theme.id}','theme')">${canAfford?`🪙 ${theme.price.toLocaleString()}`:`Need ${(theme.price-totalCoins).toLocaleString()} more`}</button>`;
+    } else if (equipped) {
+      btnHtml = `<button class="skin-card-btn equipped-label" disabled>✔ Equipped</button>`;
+    } else {
+      btnHtml = `<button class="skin-card-btn equip" onclick="equipSkin('${theme.id}','theme')">Equip</button>`;
+    }
+    tg.innerHTML += `<div class="skin-card ${equipped?'equipped':owned?'owned':''}">
+      <div class="skin-card-icon">${theme.icon}</div>
+      <div class="skin-card-name">${theme.name}</div>
+      <div class="skin-card-price">${theme.price===0?'Free':'🪙 '+theme.price.toLocaleString()}</div>
+      ${btnHtml}
+    </div>`;
+  });
+
+  // VIP card
+  const vc = document.getElementById('vip-card-content');
   if (isVip) {
-    buyBtn.style.display = 'none';
-    ownedBadge.style.display = '';
+    vc.innerHTML = `<div class="skin-card-icon">👑</div><div class="skin-card-name">YOU ARE VIP!</div><div class="skin-card-price" style="color:rgba(255,255,255,0.7)">2× multiplier · leaderboard badge · golden hammer unlocked</div>`;
   } else {
-    buyBtn.style.display = '';
-    buyBtn.disabled = totalCoins < 10000;
-    buyBtn.textContent = totalCoins < 10000
-      ? `🪙 Need ${(10000 - totalCoins).toLocaleString()} more`
-      : '🪙 10,000 coins — Buy!';
-    ownedBadge.style.display = 'none';
+    const canAfford = totalCoins >= 10000;
+    vc.innerHTML = `
+      <div class="skin-card-icon">👑</div>
+      <div class="skin-card-name">VIP</div>
+      <div class="skin-card-price" style="color:rgba(255,255,255,0.7);font-size:0.8em;line-height:1.6">2× score multiplier on every hit<br>👑 Badge on the leaderboard<br>✨ Exclusive Golden Hammer unlocked</div>
+      <button class="skin-card-btn buy" style="font-size:0.9em;padding:8px 20px;margin-top:4px" ${canAfford?'':'disabled'} onclick="buyVip()">${canAfford?'🪙 10,000 coins — Buy!':'Need '+(10000-totalCoins).toLocaleString()+' more coins'}</button>`;
   }
+}
+
+function buySkin(id, type) {
+  const list = type === 'hammer' ? HAMMER_SKINS : THEMES;
+  const item = list.find(s => s.id === id);
+  if (!item || totalCoins < item.price || ownedItems.includes(id)) return;
+  totalCoins -= item.price;
+  ownedItems.push(id);
+  localStorage.setItem('wam-coins', totalCoins);
+  saveInventory();
+  equipSkin(id, type);
+}
+
+function equipSkin(id, type) {
+  if (type === 'hammer') equippedHammer = id;
+  else equippedTheme = id;
+  saveInventory();
+  applyEquipped();
+  renderShop();
+}
+
+function openShop() {
+  renderShop();
   document.getElementById('shop-overlay').classList.add('show');
 }
 
@@ -1060,9 +1253,8 @@ function buyVip() {
   isVip = true;
   localStorage.setItem('wam-coins', totalCoins);
   localStorage.setItem('wam-vip', 'true');
-  document.body.classList.add('vip-active');
   updateCoinDisplay();
-  openShop();
+  renderShop();
 }
 
 let mode = 'solo';
@@ -1710,7 +1902,7 @@ function escapeHtml(str) {
 buildGrid();
 setMode('solo');
 updateCoinDisplay();
-if (isVip) document.body.classList.add('vip-active');
+applyEquipped();
 
 document.getElementById('username-display').textContent = currentUsername || '—';
 promptUsername();
