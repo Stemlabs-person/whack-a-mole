@@ -1050,7 +1050,7 @@
     <button class="mode-btn active" data-mode="solo"    onclick="setMode('solo')">Solo</button>
     <button class="mode-btn"        data-mode="story"   onclick="setMode('story')">📖 Story</button>
     <button class="mode-btn"        data-mode="duels"   onclick="toggleDuels()">⚔️ vs Duels ▾</button>
-    <button class="mode-btn" data-mode="frenzy" onclick="setMode('frenzy')" id="frenzy-mode-btn" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold"><img src="vip+ logo.png" style="width:14px;height:14px;border-radius:50%;vertical-align:middle;margin-right:3px"> VIP+ Frenzy</button>
+    <button class="mode-btn" data-mode="frenzy" onclick="setMode('frenzy')" id="frenzy-mode-btn" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold"><img src="vipplus-logo.png" style="width:14px;height:14px;border-radius:50%;vertical-align:middle;margin-right:3px"> VIP+ Frenzy</button>
   </div>
   <div id="duels-submenu">
     <button class="mode-btn" data-mode="2player" onclick="setMode('2player')">👥 2 Players</button>
@@ -1178,7 +1178,7 @@
       <button class="shop-tab active" onclick="switchShopTab('hammers')">🔨 Hammers</button>
       <button class="shop-tab"        onclick="switchShopTab('themes')">🎨 Themes</button>
       <button class="shop-tab"        onclick="switchShopTab('vip')">👑 VIP</button>
-      <button class="shop-tab"        onclick="switchShopTab('vipplus')" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold;border-radius:8px"><img src="vip+ logo.png" style="width:13px;height:13px;border-radius:50%;vertical-align:middle;margin-right:3px">VIP+</button>
+      <button class="shop-tab"        onclick="switchShopTab('vipplus')" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a1a;font-weight:bold;border-radius:8px"><img src="vipplus-logo.png" style="width:13px;height:13px;border-radius:50%;vertical-align:middle;margin-right:3px">VIP+</button>
     </div>
     <div id="shop-hammers" class="shop-section active">
       <div class="shop-grid" id="hammer-grid"></div>
@@ -1403,7 +1403,7 @@ function renderShop() {
   if (vpc) {
     if (isVipPlus) {
       vpc.innerHTML = `
-        <img src="vip+ logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid #ff8c00;object-fit:cover;margin-bottom:4px">
+        <img src="vipplus-logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid #ff8c00;object-fit:cover;margin-bottom:4px">
         <div class="skin-card-name" style="font-size:1.3em;color:#ff8c00">YOU ARE VIP+!</div>
         <div class="skin-card-price" style="color:rgba(255,255,255,0.8);font-size:0.82em;line-height:1.8;text-align:center">
           3× score multiplier · VIP+ leaderboard badge<br>
@@ -1415,7 +1415,7 @@ function renderShop() {
     } else {
       const canAffordVipPlus = getCoins() >= 25000;
       vpc.innerHTML = `
-        <img src="vip+ logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid rgba(255,140,0,0.5);object-fit:cover;margin-bottom:4px;opacity:0.7">
+        <img src="vipplus-logo.png" style="width:56px;height:56px;border-radius:50%;border:3px solid rgba(255,140,0,0.5);object-fit:cover;margin-bottom:4px;opacity:0.7">
         <div class="skin-card-name" style="font-size:1.3em;color:#ff8c00">VIP+</div>
         <div class="skin-card-price" style="color:rgba(255,255,255,0.7);font-size:0.8em;line-height:1.8;text-align:center">
           3× score multiplier · VIP+ leaderboard badge<br>
@@ -2170,7 +2170,7 @@ async function showLeaderboard() {
     tr.innerHTML = `
       <td class="lb-rank ${rankClass}">${medal}</td>
       <td style="text-align:left">
-        ${escapeHtml(entry.name)}${(isMe && isVipPlus) ? '<span class="vip-badge"><img src="vip+ logo.png">VIP+</span>' : (entry.vip || (isMe && isVip)) ? '<span style="color:#ffb347;font-size:0.85em;margin-left:4px">👑</span>' : ''}
+        ${escapeHtml(entry.name)}${(isMe && isVipPlus) ? '<span class="vip-badge"><img src="vipplus-logo.png">VIP+</span>' : (entry.vip || (isMe && isVip)) ? '<span style="color:#ffb347;font-size:0.85em;margin-left:4px">👑</span>' : ''}
         ${showCode ? '<br><span style="font-size:0.68em;color:#2ecc71;letter-spacing:1.5px">🔑 Your code: <b style="color:#ffe066">' + top20Code + '</b></span>' : ''}
       </td>
       <td style="font-weight:bold;color:#ffe066">${entry.score}</td>
