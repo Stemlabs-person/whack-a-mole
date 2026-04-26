@@ -1140,10 +1140,16 @@ function applyEquipped() {
   document.body.classList.add('theme-' + equippedTheme);
 }
 
+const OWNER = 'ethan';
+function isOwner() { return currentUsername.toLowerCase() === OWNER; }
+
 function updateCoinDisplay() {
-  document.getElementById('coin-count').textContent = totalCoins.toLocaleString();
-  document.getElementById('shop-coin-count').textContent = totalCoins.toLocaleString();
+  const display = isOwner() ? '∞' : totalCoins.toLocaleString();
+  document.getElementById('coin-count').textContent = display;
+  document.getElementById('shop-coin-count').textContent = display;
 }
+
+function getCoins() { return isOwner() ? Infinity : totalCoins; }
 
 let currentShopTab = 'hammers';
 function switchShopTab(tab) {
@@ -1164,7 +1170,7 @@ function renderShop() {
   HAMMER_SKINS.forEach(skin => {
     const owned    = ownedItems.includes(skin.id) || (skin.vipOnly && isVip);
     const equipped = equippedHammer === skin.id;
-    const canAfford = totalCoins >= skin.price;
+    const canAfford = getCoins() >= skin.price;
     let btnHtml = '';
     if (skin.vipOnly && !isVip) {
       btnHtml = `<button class="skin-card-btn vip-only" disabled>👑 VIP Only</button>`;
@@ -1189,7 +1195,7 @@ function renderShop() {
   THEMES.forEach(theme => {
     const owned    = ownedItems.includes(theme.id);
     const equipped = equippedTheme === theme.id;
-    const canAfford = totalCoins >= theme.price;
+    const canAfford = getCoins() >= theme.price;
     let btnHtml = '';
     if (!owned) {
       btnHtml = `<button class="skin-card-btn buy" ${canAfford?'':'disabled'} onclick="buySkin('${theme.id}','theme')">${canAfford?`🪙 ${theme.price.toLocaleString()}`:`Need ${(theme.price-totalCoins).toLocaleString()} more`}</button>`;
@@ -1211,7 +1217,7 @@ function renderShop() {
   if (isVip) {
     vc.innerHTML = `<div class="skin-card-icon">👑</div><div class="skin-card-name">YOU ARE VIP!</div><div class="skin-card-price" style="color:rgba(255,255,255,0.7)">2× multiplier · leaderboard badge · golden hammer unlocked</div>`;
   } else {
-    const canAfford = totalCoins >= 10000;
+    const canAfford = getCoins() >= 10000;
     vc.innerHTML = `
       <div class="skin-card-icon">👑</div>
       <div class="skin-card-name">VIP</div>
@@ -1223,8 +1229,8 @@ function renderShop() {
 function buySkin(id, type) {
   const list = type === 'hammer' ? HAMMER_SKINS : THEMES;
   const item = list.find(s => s.id === id);
-  if (!item || totalCoins < item.price || ownedItems.includes(id)) return;
-  totalCoins -= item.price;
+  if (!item || getCoins() < item.price || ownedItems.includes(id)) return;
+  if (!isOwner()) totalCoins -= item.price;
   ownedItems.push(id);
   localStorage.setItem('wam-coins', totalCoins);
   saveInventory();
@@ -1251,8 +1257,8 @@ function closeShop() {
 }
 
 function buyVip() {
-  if (isVip || totalCoins < 10000) return;
-  totalCoins -= 10000;
+  if (isVip || getCoins() < 10000) return;
+  if (!isOwner()) totalCoins -= 10000;
   isVip = true;
   localStorage.setItem('wam-coins', totalCoins);
   localStorage.setItem('wam-vip', 'true');
@@ -1838,6 +1844,7 @@ function submitUsername() {
   localStorage.setItem('wam-username', currentUsername);
   document.getElementById('username-display').textContent = currentUsername;
   document.getElementById('username-modal').classList.remove('show');
+  updateCoinDisplay();
 }
 
 document.getElementById('username-input').addEventListener('keydown', (e) => {
