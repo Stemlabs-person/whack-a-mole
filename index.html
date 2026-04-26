@@ -74,6 +74,70 @@
   #mode-select {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #duels-submenu {
+    display: none;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 6px;
+  }
+  #duels-submenu.open { display: flex; }
+  #duels-submenu .mode-btn {
+    font-size: 0.82em;
+    padding: 6px 14px;
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.1);
+  }
+
+  #story-quest {
+    display: none;
+    background: rgba(0,0,0,0.35);
+    border: 2px solid rgba(255,224,102,0.6);
+    border-radius: 14px;
+    padding: 8px 20px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+    min-width: 220px;
+  }
+  #story-quest.show { display: block; }
+  #quest-level {
+    font-size: 0.65em;
+    color: #ffe066;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  #quest-name {
+    font-size: 1em;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
+  #quest-desc {
+    font-size: 0.75em;
+    color: rgba(255,255,255,0.8);
+    margin: 2px 0;
+  }
+  #quest-progress {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #ffe066;
+  }
+  #quest-bar-wrap {
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    height: 8px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  #quest-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ffe066, #ff9f1c);
+    border-radius: 8px;
+    width: 0%;
+    transition: width 0.3s ease;
   }
 
   .mode-btn {
@@ -232,7 +296,9 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    padding: 14px;
+    padding: 16px;
+    width: 90vw;
+    max-width: 860px;
     background: rgba(0,100,0,0.3);
     border-radius: 20px;
     border: 3px solid rgba(255,255,255,0.25);
@@ -241,8 +307,9 @@
   }
 
   .hole {
-    width: 130px;
-    height: 130px;
+    width: 132px;
+    height: 132px;
+    justify-self: center;
     background: radial-gradient(ellipse at 40% 35%, #5c3310 0%, #2a1508 60%, #150a04 100%);
     border-radius: 50%;
     border: 4px solid #4a7a20;
@@ -253,31 +320,20 @@
                 0 0 0 3px #2d5a10;
   }
 
-  /* Grass rim on hole */
-  .hole::before {
-    content: '';
-    position: absolute;
-    top: -4px; left: -4px; right: -4px;
-    height: 22px;
-    background: linear-gradient(180deg, #5cb85c 0%, #3a9a3a 60%, transparent 100%);
-    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
-    z-index: 4;
-    pointer-events: none;
-  }
 
   .mole {
     position: absolute;
-    bottom: -100%;
+    bottom: -110%;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 106px;
+    width: 78%;
+    height: auto;
     transition: bottom 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     user-select: none;
     z-index: 3;
   }
-  .mole.up { bottom: 4px; }
+  .mole.up { bottom: 2px; }
   .mole svg { width: 100%; height: 100%; }
   .mole.hit { filter: brightness(4) saturate(0); pointer-events: none; }
 
@@ -372,6 +428,91 @@
     text-transform: uppercase;
   }
 
+  /* Story map overlay */
+  #story-map {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,30,0,0.92);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 18px;
+    backdrop-filter: blur(6px);
+  }
+  #story-map.show { display: flex; }
+
+  #story-map-title {
+    font-size: 2.4em;
+    color: #ffe066;
+    text-shadow: 3px 3px 0 #5a3e00, 0 0 20px rgba(255,200,0,0.5);
+    letter-spacing: 3px;
+  }
+  #story-map-sub {
+    font-size: 0.85em;
+    color: rgba(255,255,255,0.7);
+    margin-top: -10px;
+  }
+
+  .level-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 680px;
+    padding: 0 16px;
+  }
+
+  .level-card {
+    background: linear-gradient(135deg, #1a5c0a, #2e8b22);
+    border: 3px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #fff;
+    user-select: none;
+  }
+  .level-card:hover:not(.locked) {
+    transform: scale(1.06) translateY(-2px);
+    border-color: #ffe066;
+    box-shadow: 0 6px 20px rgba(255,224,102,0.35);
+  }
+  .level-card.locked {
+    background: rgba(20,20,20,0.6);
+    border-color: rgba(255,255,255,0.1);
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  .level-card.completed { border-color: #ffe066; }
+  .level-card.current {
+    border-color: #ff9f1c;
+    box-shadow: 0 0 18px rgba(255,159,28,0.5);
+  }
+  .lc-icon  { font-size: 1.8em; margin-bottom: 4px; }
+  .lc-num   { font-size: 0.6em; color: rgba(255,255,255,0.55); letter-spacing: 1px; text-transform: uppercase; }
+  .lc-name  { font-size: 0.82em; font-weight: bold; color: #ffe066; margin: 3px 0; }
+  .lc-obj   { font-size: 0.65em; color: rgba(255,255,255,0.75); }
+  .lc-badge { margin-top: 6px; font-size: 0.7em; }
+  .lc-badge.done  { color: #ffe066; }
+  .lc-badge.next  { color: #ff9f1c; font-weight: bold; }
+  .lc-badge.lock  { color: rgba(255,255,255,0.35); }
+
+  #story-map-back {
+    padding: 10px 28px;
+    font-size: 0.9em;
+    font-weight: bold;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.35);
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  #story-map-back:hover { background: rgba(255,255,255,0.22); }
+
   /* Result overlay */
   #result-overlay {
     display: none;
@@ -450,9 +591,13 @@
 
 <div id="top-bar">
   <div id="mode-select">
-    <button class="mode-btn active" data-mode="solo"     onclick="setMode('solo')">Solo</button>
-    <button class="mode-btn"        data-mode="2player"  onclick="setMode('2player')">2 Players</button>
-    <button class="mode-btn"        data-mode="ai"       onclick="setMode('ai')">vs AI</button>
+    <button class="mode-btn active" data-mode="solo"    onclick="setMode('solo')">Solo</button>
+    <button class="mode-btn"        data-mode="story"   onclick="setMode('story')">📖 Story</button>
+    <button class="mode-btn"        data-mode="duels"   onclick="toggleDuels()">⚔️ vs Duels ▾</button>
+  </div>
+  <div id="duels-submenu">
+    <button class="mode-btn" data-mode="2player" onclick="setMode('2player')">👥 2 Players</button>
+    <button class="mode-btn" data-mode="ai"      onclick="setMode('ai')">🤖 vs AI</button>
   </div>
   <div class="speed-select">
     <span>Speed:</span>
@@ -486,6 +631,14 @@
   </div>
 </div>
 
+<div id="story-quest">
+  <div id="quest-level">Level 1</div>
+  <div id="quest-name">First Steps</div>
+  <div id="quest-desc">Whack 6 moles!</div>
+  <div id="quest-progress">0 / 6</div>
+  <div id="quest-bar-wrap"><div id="quest-bar"></div></div>
+</div>
+
 <div id="highscore-box">Best: <span id="highscore-display">0</span></div>
 
 <div id="game-controls">
@@ -508,12 +661,22 @@
   <div style="color:rgba(255,255,255,0.45);font-size:0.65em;text-align:center">P1: click moles</div>
 </div>
 
+<div id="story-map">
+  <div id="story-map-title">📖 STORY MODE</div>
+  <div id="story-map-sub"></div>
+  <div class="level-cards" id="level-cards"></div>
+  <button id="story-map-back" onclick="closeStoryMap()">← Back</button>
+</div>
+
 <div id="result-overlay">
   <div id="result-card">
     <div id="result-title">GAME OVER</div>
     <div id="result-scores"></div>
     <div id="result-highscore"></div>
-    <button id="play-again-btn" onclick="resetGame()">▶ PLAY AGAIN</button>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button id="play-again-btn" onclick="resetGame()">▶ PLAY AGAIN</button>
+      <button id="back-to-map-btn" onclick="goBackToMap()" style="display:none;padding:14px 28px;font-size:1em;font-weight:bold;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.5);color:#fff;border-radius:20px;cursor:pointer;letter-spacing:1px">🗺 Level Map</button>
+    </div>
   </div>
 </div>
 
@@ -527,6 +690,17 @@ const SPEEDS = {
   insane: { minUp: 200,  maxUp: 500,  interval: 300  },
 };
 
+const STORY_LEVELS = [
+  { level:1, icon:'🌿', name:'Muddy Meadow',  goal:'hits',  target:5,   speed:'easy',   desc:'Whack 5 moles in 30s' },
+  { level:2, icon:'🌊', name:'Soggy Swamp',   goal:'hits',  target:10,  speed:'easy',   desc:'Whack 10 moles in 30s' },
+  { level:3, icon:'🪨', name:'Rocky Ridge',   goal:'score', target:15,  speed:'normal', desc:'Score 15 pts in 30s' },
+  { level:4, icon:'💨', name:'Windy Hills',   goal:'hits',  target:18,  speed:'normal', desc:'Whack 18 moles in 30s' },
+  { level:5, icon:'🏜️', name:'Dusty Desert',  goal:'score', target:30,  speed:'normal', desc:'Score 30 pts in 30s' },
+  { level:6, icon:'⛈️', name:'Stormy Peak',   goal:'score', target:45,  speed:'hard',   desc:'Score 45 pts in 30s' },
+  { level:7, icon:'🏔️', name:'The Summit',    goal:'score', target:65,  speed:'hard',   desc:'Score 65 pts in 30s' },
+  { level:8, icon:'👹', name:'Boss Fight',    goal:'boss',  target:0,   speed:'normal', desc:'Beat the AI Boss!' },
+];
+
 let mode = 'solo';
 let scores = [0, 0];
 let timeLeft = 60;
@@ -537,6 +711,8 @@ let moleTimers = [];
 let activeMoles = new Set();
 let streaks = [0, 0];
 let highScore = parseInt(localStorage.getItem('wam-highscore') || '0');
+let storyLevelIndex = parseInt(localStorage.getItem('wam-story-level') || '0');
+let storyHits = 0;
 
 // --- Audio ---
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -589,10 +765,32 @@ function playMiss() {
 }
 
 // --- Mode ---
+function toggleDuels() {
+  const sub = document.getElementById('duels-submenu');
+  const btn = document.querySelector('[data-mode="duels"]');
+  const isOpen = sub.classList.toggle('open');
+  btn.classList.toggle('active', isOpen);
+  if (!isOpen && (mode === '2player' || mode === 'ai')) {
+    // keep current duel mode active
+    btn.classList.add('active');
+  }
+}
+
 function setMode(m) {
   mode = m;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
-  document.getElementById('p2-box').style.display = (m === 'solo') ? 'none' : 'flex';
+  // highlight correct top-level button
+  const topModes = ['solo','story','duels'];
+  document.querySelectorAll('.mode-btn').forEach(b => {
+    const isActive = b.dataset.mode === m ||
+      (b.dataset.mode === 'duels' && (m === '2player' || m === 'ai'));
+    b.classList.toggle('active', isActive);
+  });
+
+  const isSolo = m === 'solo' || m === 'story';
+  document.getElementById('p2-box').style.display = isSolo ? 'none' : 'flex';
+  document.getElementById('story-quest').classList.toggle('show', m === 'story');
+  document.getElementById('highscore-box').style.display = m === 'story' ? 'none' : '';
+
   const keyMap = document.getElementById('key-map');
   const p2streak = document.getElementById('streak-box-p2');
   if (m === '2player') {
@@ -600,14 +798,22 @@ function setMode(m) {
     document.getElementById('p2-label').textContent = 'Player 2';
     keyMap.classList.add('visible');
     p2streak.style.display = '';
+    document.getElementById('duels-submenu').classList.add('open');
   } else if (m === 'ai') {
     document.getElementById('p1-label').textContent = 'You';
     document.getElementById('p2-label').textContent = 'AI Bot';
     keyMap.classList.remove('visible');
     p2streak.style.display = '';
+    document.getElementById('duels-submenu').classList.add('open');
   } else {
     document.getElementById('p1-label').textContent = 'Score';
     keyMap.classList.remove('visible');
+    document.getElementById('duels-submenu').classList.remove('open');
+  }
+
+  if (m === 'story') {
+    showStoryMap();
+    return;
   }
   resetGame();
 }
@@ -700,6 +906,14 @@ function whack(index, player) {
   updateScores(player);
   showHitText(index, player, points);
 
+  if (mode === 'story' && player === 0) {
+    storyHits++;
+    const lv = currentLevel();
+    const current = lv.goal === 'hits' ? storyHits : scores[0];
+    updateStoryProgress(current);
+    if (current >= lv.target) { endGame(); return; }
+  }
+
   clearTimeout(moleTimers[index]);
   activeMoles.delete(index);
 
@@ -755,7 +969,93 @@ function updateScores(player) {
   document.getElementById('highscore-display').textContent = highScore;
 }
 
-function getSpeed() { return SPEEDS[document.getElementById('speed-select').value]; }
+// --- Story mode helpers ---
+function currentLevel() { return STORY_LEVELS[Math.min(storyLevelIndex, STORY_LEVELS.length - 1)]; }
+
+function renderStoryQuest() {
+  const lv = currentLevel();
+  document.getElementById('quest-level').textContent = `Level ${lv.level} of ${STORY_LEVELS.length}`;
+  document.getElementById('quest-name').textContent = lv.name;
+  document.getElementById('quest-desc').textContent = lv.desc;
+  updateStoryProgress(0);
+}
+
+function updateStoryProgress(current) {
+  const lv = currentLevel();
+  const pct = Math.min(100, Math.round(current / lv.target * 100));
+  document.getElementById('quest-progress').textContent = `${current} / ${lv.target}`;
+  document.getElementById('quest-bar').style.width = pct + '%';
+}
+
+function getSpeed() {
+  if (mode === 'story') return SPEEDS[currentLevel().speed];
+  return SPEEDS[document.getElementById('speed-select').value];
+}
+
+function showStoryMap() {
+  resetGame();
+  const completed = storyLevelIndex;
+  document.getElementById('story-map-sub').textContent =
+    completed >= STORY_LEVELS.length
+      ? '🏆 All levels complete!'
+      : `${completed} / ${STORY_LEVELS.length} levels complete`;
+
+  const container = document.getElementById('level-cards');
+  container.innerHTML = '';
+  STORY_LEVELS.forEach((lv, i) => {
+    const card = document.createElement('div');
+    const isLocked    = i > completed;
+    const isCompleted = i < completed;
+    const isCurrent   = i === completed && i < STORY_LEVELS.length;
+    card.className = 'level-card' +
+      (isLocked ? ' locked' : '') +
+      (isCompleted ? ' completed' : '') +
+      (isCurrent ? ' current' : '');
+    card.innerHTML = `
+      <div class="lc-icon">${isLocked ? '🔒' : lv.icon}</div>
+      <div class="lc-num">Level ${lv.level}</div>
+      <div class="lc-name">${lv.name}</div>
+      <div class="lc-obj">${lv.desc}</div>
+      <div class="lc-badge ${isCompleted ? 'done' : isCurrent ? 'next' : 'lock'}">
+        ${isCompleted ? '⭐ Done' : isCurrent ? '▶ Play' : '🔒'}
+      </div>`;
+    if (!isLocked) card.addEventListener('click', () => startStoryLevel(i));
+    container.appendChild(card);
+  });
+
+  document.getElementById('story-map').classList.add('show');
+}
+
+function closeStoryMap() {
+  document.getElementById('story-map').classList.remove('show');
+  // revert to solo if user backs out without picking a level
+  if (mode === 'story') {
+    mode = 'solo';
+    document.querySelectorAll('.mode-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.mode === 'solo'));
+    document.getElementById('story-quest').classList.remove('show');
+    document.getElementById('highscore-box').style.display = '';
+  }
+}
+
+function startStoryLevel(index) {
+  storyLevelIndex = index;
+  document.getElementById('story-map').classList.remove('show');
+  mode = 'solo'; // temporarily reset so resetGame() works cleanly
+  resetGame();
+  mode = 'story';
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === 'story'));
+  document.getElementById('p2-box').style.display = 'none';
+  document.getElementById('story-quest').classList.add('show');
+  document.getElementById('highscore-box').style.display = 'none';
+  renderStoryQuest();
+}
+
+function goBackToMap() {
+  document.getElementById('result-overlay').classList.remove('show');
+  showStoryMap();
+}
 
 function popMole() {
   if (!running) return;
@@ -791,7 +1091,8 @@ function startGame() {
   running = true;
   scores = [0, 0];
   streaks = [0, 0];
-  timeLeft = 60;
+  storyHits = 0;
+  timeLeft = mode === 'story' ? 30 : 60;
   updateScores(0);
   updateTimer();
   updateStreak(0); updateStreak(1);
@@ -823,10 +1124,36 @@ function endGame() {
   const resultScores = document.getElementById('result-scores');
   const resultHS = document.getElementById('result-highscore');
 
-  if (mode === 'solo') {
+  document.getElementById('back-to-map-btn').style.display = mode === 'story' ? '' : 'none';
+
+  if (mode === 'story') {
+    const lv = currentLevel();
+    const current = lv.goal === 'hits' ? storyHits : scores[0];
+    const passed = current >= lv.target;
+    if (passed) {
+      title.textContent = lv.level === STORY_LEVELS.length ? '🏆 YOU BEAT STORY!' : '⭐ LEVEL COMPLETE!';
+      resultScores.innerHTML = `<span style="color:#ffe066">${lv.desc.replace('!','')} ✔</span>`;
+      if (storyLevelIndex < STORY_LEVELS.length - 1) {
+        storyLevelIndex++;
+        localStorage.setItem('wam-story-level', storyLevelIndex);
+        const nextLv = currentLevel();
+        resultHS.innerHTML = `Next: <span style="color:#ffe066">Level ${nextLv.level} — ${nextLv.name}</span>`;
+        document.getElementById('play-again-btn').textContent = '▶ NEXT LEVEL';
+      } else {
+        resultHS.innerHTML = `<span style="color:#ffe066">All levels complete! 🎉</span>`;
+        document.getElementById('play-again-btn').textContent = '↺ PLAY AGAIN';
+      }
+    } else {
+      title.textContent = '❌ LEVEL FAILED';
+      resultScores.innerHTML = `<span style="color:#ff8a80">Got ${current} / ${lv.target}</span>`;
+      resultHS.innerHTML = `Keep trying — <span style="color:#ffe066">${lv.name}</span>`;
+      document.getElementById('play-again-btn').textContent = '↺ RETRY';
+    }
+  } else if (mode === 'solo') {
     title.textContent = scores[0] >= highScore ? '🏆 NEW BEST!' : 'GAME OVER';
     resultScores.innerHTML = `<span>Score: <b style="color:#ffe066;font-size:1.4em">${scores[0]}</b></span>`;
     resultHS.innerHTML = `Best ever: <span>${highScore}</span>`;
+    document.getElementById('play-again-btn').textContent = '▶ PLAY AGAIN';
   } else {
     let winner;
     if (scores[0] > scores[1]) winner = mode === 'ai' ? '🎉 YOU WIN!' : '🎉 P1 WINS!';
@@ -839,6 +1166,7 @@ function endGame() {
       <span style="color:#ff8a80">${p2name}: <b>${scores[1]}</b></span>
     `;
     resultHS.innerHTML = '';
+    document.getElementById('play-again-btn').textContent = '▶ PLAY AGAIN';
   }
 
   document.getElementById('result-overlay').classList.add('show');
@@ -852,10 +1180,12 @@ function resetGame() {
   activeMoles.clear();
   scores = [0, 0];
   streaks = [0, 0];
+  storyHits = 0;
   timeLeft = 60;
   updateScores(0);
   updateTimer();
   updateStreak(0); updateStreak(1);
+  if (mode === 'story') renderStoryQuest();
   document.getElementById('start-btn').disabled = false;
   document.getElementById('result-overlay').classList.remove('show');
   buildGrid();
