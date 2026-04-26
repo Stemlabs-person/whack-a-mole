@@ -923,6 +923,109 @@
 
   /* VIP badge in leaderboard */
   .vip-badge { color: #ffb347; font-size: 0.85em; margin-left: 4px; }
+
+  /* ── Daily Spin ── */
+  #spin-overlay, #boss-overlay, #code-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 200;
+    justify-content: center; align-items: center;
+    flex-direction: column; backdrop-filter: blur(6px);
+  }
+  #spin-overlay.show, #boss-overlay.show, #code-overlay.show { display: flex; }
+
+  #spin-card, #boss-card, #code-card {
+    background: linear-gradient(135deg, #1a1a4a, #2e1a5c);
+    border: 4px solid #ffe066;
+    border-radius: 24px; padding: 28px 36px;
+    text-align: center; box-shadow: 0 0 60px rgba(255,224,102,0.3);
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    max-width: 92vw;
+  }
+  #spin-card h2, #boss-card h2, #code-card h2 {
+    font-size: 1.8em; color: #ffe066;
+    text-shadow: 2px 2px 0 #5a3e00; letter-spacing: 2px; margin: 0;
+  }
+
+  #spin-wrap { position: relative; width: 260px; height: 260px; }
+  #spin-canvas { border-radius: 50%; box-shadow: 0 0 24px rgba(255,224,102,0.4); }
+  #spin-pointer {
+    position: absolute; top: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 28px solid #ff4444;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    z-index: 10;
+  }
+  #spin-result {
+    font-size: 1.1em; font-weight: bold; color: #ffe066;
+    min-height: 1.4em; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  #spin-timer { font-size: 0.75em; color: rgba(255,255,255,0.55); }
+
+  /* ── Boss Fight ── */
+  .diff-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .diff-btn {
+    padding: 12px 22px; font-size: 0.95em; font-weight: bold;
+    border: 3px solid rgba(255,255,255,0.4); border-radius: 16px;
+    background: rgba(255,255,255,0.1); color: #fff;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 1px;
+  }
+  .diff-btn:hover { transform: scale(1.07); border-color: #ffe066; color: #ffe066; }
+  .diff-btn.easy   { border-color: rgba(46,204,113,0.6); }
+  .diff-btn.medium { border-color: rgba(241,196,15,0.6); }
+  .diff-btn.hard   { border-color: rgba(231,76,60,0.6);  }
+  .diff-btn.easy:hover   { border-color: #2ecc71; color: #2ecc71; }
+  .diff-btn.medium:hover { border-color: #f1c40f; color: #f1c40f; }
+  .diff-btn.hard:hover   { border-color: #e74c3c; color: #e74c3c; }
+  #boss-progress-bar-wrap {
+    background: rgba(255,255,255,0.12); border-radius: 10px;
+    height: 12px; width: 240px; overflow: hidden; display: none;
+  }
+  #boss-progress-bar {
+    height: 100%; background: linear-gradient(90deg,#2ecc71,#ffe066);
+    border-radius: 10px; width: 0%; transition: width 0.2s;
+  }
+  #boss-status { font-size: 1em; color: #fff; font-weight: bold; display: none; }
+  .mole.king {
+    transform: translateX(-50%) scale(1.45);
+    filter: hue-rotate(200deg) saturate(2) brightness(1.2);
+  }
+  .mole.king.up { bottom: 6px; }
+
+  /* ── Codes ── */
+  #code-input {
+    padding: 10px 18px; font-size: 1.1em; font-weight: bold;
+    border: 3px solid #ffe066; border-radius: 14px;
+    background: rgba(255,255,255,0.1); color: #fff;
+    text-align: center; width: 100%; outline: none;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  #code-input::placeholder { color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: none; }
+  #code-msg { font-size: 0.9em; font-weight: bold; min-height: 1.3em; }
+  #code-msg.ok  { color: #2ecc71; }
+  #code-msg.err { color: #e74c3c; }
+  #code-card { max-height: 88vh; overflow-y: auto; width: 360px; }
+  #top20-code-box {
+    display: none; background: rgba(255,224,102,0.1);
+    border: 2px solid rgba(255,224,102,0.5); border-radius: 14px;
+    padding: 10px 18px; font-size: 0.85em; color: #ffe066;
+    text-align: center; line-height: 1.7; width: 100%;
+  }
+
+  .feature-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 2px 0; }
+  .feat-btn {
+    padding: 9px 18px; font-size: 0.85em; font-weight: bold;
+    border: none; border-radius: 16px; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 1px;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+  }
+  .feat-btn:hover { transform: scale(1.05) translateY(-1px); }
+  .feat-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+  #spin-feat-btn { background: linear-gradient(135deg,#f39c12,#e74c3c); color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.3); }
+  #boss-feat-btn { background: linear-gradient(135deg,#8e44ad,#e74c3c); color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.3); }
+  #code-feat-btn { background: linear-gradient(135deg,#27ae60,#2980b9); color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.3); }
 </style>
 </head>
 <body>
@@ -988,6 +1091,12 @@
   <div id="coin-display" onclick="openShop()">🪙 <span id="coin-count">0</span></div>
   <button id="shop-btn" onclick="openShop()">🛒 Shop</button>
   <button id="lb-btn" onclick="showLeaderboard()">🏆 Leaderboard</button>
+</div>
+
+<div class="feature-btns">
+  <button class="feat-btn" id="spin-feat-btn" onclick="openSpin()">🎰 Daily Spin</button>
+  <button class="feat-btn" id="boss-feat-btn" onclick="openBossFight()">👹 Boss Fight</button>
+  <button class="feat-btn" id="code-feat-btn" onclick="openCode()">🔑 Redeem Code</button>
 </div>
 
 <div id="game-controls">
@@ -1068,6 +1177,52 @@
       <div class="vip-shop-card" id="vip-card-content"></div>
     </div>
     <button id="shop-close-btn" onclick="closeShop()">✕ Close</button>
+  </div>
+</div>
+
+<!-- Daily Spin -->
+<div id="spin-overlay">
+  <div id="spin-card">
+    <h2>🎰 DAILY SPIN</h2>
+    <div id="spin-wrap">
+      <canvas id="spin-canvas" width="260" height="260"></canvas>
+      <div id="spin-pointer"></div>
+    </div>
+    <div id="spin-result"></div>
+    <div id="spin-timer"></div>
+    <button class="ctrl-btn" id="spin-go-btn" onclick="doSpin()" style="background:linear-gradient(135deg,#f39c12,#e74c3c);color:#fff">🎰 SPIN!</button>
+    <button id="shop-close-btn" onclick="closeSpin()">✕ Close</button>
+  </div>
+</div>
+
+<!-- Boss Fight -->
+<div id="boss-overlay">
+  <div id="boss-card">
+    <h2>👹 BOSS FIGHT</h2>
+    <div id="boss-intro">
+      <p style="color:rgba(255,255,255,0.8);font-size:0.85em;line-height:1.6">Whack <b style="color:#ffe066">10 guards</b> in a row without missing,<br>then face the <b style="color:#e74c3c">King Mole!</b></p>
+      <div class="diff-btns">
+        <button class="diff-btn easy"   onclick="startBossFight('easy')">🟢 Easy<br><small style="opacity:0.7">+500 coins</small></button>
+        <button class="diff-btn medium" onclick="startBossFight('normal')">🟡 Medium<br><small style="opacity:0.7">+1,500 coins</small></button>
+        <button class="diff-btn hard"   onclick="startBossFight('hard')">🔴 Hard<br><small style="opacity:0.7">+3,000 coins</small></button>
+      </div>
+    </div>
+    <div id="boss-progress-bar-wrap"><div id="boss-progress-bar"></div></div>
+    <div id="boss-status"></div>
+    <button id="shop-close-btn" onclick="closeBossFight()">✕ Close</button>
+  </div>
+</div>
+
+<!-- Code Redeem -->
+<div id="code-overlay">
+  <div id="code-card">
+    <h2>🔑 REDEEM CODE</h2>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.82em;margin:0">Enter a secret code to claim your reward!</p>
+    <div id="top20-code-box"></div>
+    <input id="code-input" type="text" maxlength="20" placeholder="Enter code here..." autocomplete="off" oninput="this.value=this.value.toUpperCase()" />
+    <div id="code-msg"></div>
+    <button class="ctrl-btn" onclick="redeemCode()" style="background:linear-gradient(135deg,#27ae60,#2980b9);color:#fff">🎁 Redeem!</button>
+    <button id="shop-close-btn" onclick="closeCode()">✕ Close</button>
   </div>
 </div>
 
@@ -1593,6 +1748,19 @@ function getHole(i) { return document.querySelectorAll('.hole')[i]; }
 function whack(index, player) {
   if (!running || !activeMoles.has(index)) return;
 
+  // Boss fight intercept
+  if (bossMode && player === 0) {
+    if (bossPhase === 'king' && index === bossKingIndex) {
+      getMole(index).classList.add('hit');
+      activeMoles.delete(index);
+      clearTimeout(moleTimers[index]);
+      setTimeout(() => endBossFight(true), 400);
+      return;
+    } else if (bossPhase === 'guards') {
+      // handled below, but track streak
+    } else { return; }
+  }
+
   const mole = getMole(index);
   mole.classList.add('hit');
 
@@ -1611,6 +1779,8 @@ function whack(index, player) {
   scores[player] += points;
   updateScores(player);
   showHitText(index, player, points);
+
+  if (bossMode && player === 0 && bossPhase === 'guards') bossWhackGuard(index);
 
   if (mode === 'story' && player === 0) {
     storyHits++;
@@ -1783,6 +1953,7 @@ function popMole() {
       streaks[0] = 0; updateStreak(0);
       streaks[1] = 0; updateStreak(1);
       playMiss();
+      if (bossMode && bossPhase === 'guards') { endBossFight(false); return; }
     }
   }, upTime);
 
@@ -1825,6 +1996,16 @@ function endGame() {
     totalCoins += scores[0];
     localStorage.setItem('wam-coins', totalCoins);
     updateCoinDisplay();
+  }
+
+  if (mode === 'solo' && scores[0] > 0) {
+    const newUnlock = checkMilestones(Math.max(scores[0], highScore));
+    if (newUnlock) {
+      setTimeout(() => {
+        const el = document.getElementById('result-highscore');
+        el.innerHTML += `<br><span style="color:#2ecc71;font-size:0.95em">🔓 New code unlocked! Check Redeem Code.</span>`;
+      }, 200);
+    }
   }
 
   if (mode === 'solo' && scores[0] > highScore) {
@@ -2048,6 +2229,347 @@ function copyBinId() {
 
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── DAILY SPIN ──────────────────────────────────────────────────────────────
+const SPIN_PRIZES = [
+  { label:'💰 100',     type:'coins', value:100,     color:'#27ae60' },
+  { label:'💰 500',     type:'coins', value:500,     color:'#2980b9' },
+  { label:'💰 1,000',   type:'coins', value:1000,    color:'#8e44ad' },
+  { label:'💰 2,000',   type:'coins', value:2000,    color:'#e67e22' },
+  { label:'💰 5,000',   type:'coins', value:5000,    color:'#c0392b' },
+  { label:'🧊 Ice',     type:'skin',  value:'ice',   stype:'hammer', color:'#1abc9c' },
+  { label:'🌙 Night',   type:'skin',  value:'night', stype:'theme',  color:'#2c3e50' },
+  { label:'😢 Miss',    type:'miss',  value:0,                       color:'#7f8c8d' },
+];
+const SEG = SPIN_PRIZES.length;
+let spinAngle = 0;
+let spinRunning = false;
+
+function drawWheel(angle) {
+  const canvas = document.getElementById('spin-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2, r = cx - 8;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save(); ctx.translate(cx, cy);
+  ctx.rotate((angle - 90) * Math.PI / 180);
+  SPIN_PRIZES.forEach((p, i) => {
+    const a0 = (i / SEG) * Math.PI * 2;
+    const a1 = ((i + 1) / SEG) * Math.PI * 2;
+    ctx.beginPath(); ctx.moveTo(0, 0);
+    ctx.arc(0, 0, r, a0, a1); ctx.closePath();
+    ctx.fillStyle = p.color; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.save();
+    ctx.rotate(a0 + Math.PI / SEG);
+    ctx.translate(r * 0.62, 0); ctx.rotate(Math.PI / 2);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Arial Black, Arial';
+    ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 3;
+    ctx.fillText(p.label, 0, 0); ctx.restore();
+  });
+  ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.strokeStyle = '#ccc'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.restore();
+}
+
+function openSpin() {
+  drawWheel(spinAngle);
+  updateSpinBtn();
+  document.getElementById('spin-result').textContent = '';
+  document.getElementById('spin-overlay').classList.add('show');
+}
+function closeSpin() { document.getElementById('spin-overlay').classList.remove('show'); }
+
+function canSpinToday() {
+  const last = localStorage.getItem('wam-last-spin');
+  const today = new Date().toDateString();
+  return last !== today;
+}
+
+function updateSpinBtn() {
+  const btn = document.getElementById('spin-go-btn');
+  const timer = document.getElementById('spin-timer');
+  if (!canSpinToday()) {
+    btn.disabled = true; btn.textContent = '🔒 Come back tomorrow!';
+    const now = new Date();
+    const midnight = new Date(now); midnight.setHours(24,0,0,0);
+    const h = Math.floor((midnight - now) / 3600000);
+    const m = Math.floor(((midnight - now) % 3600000) / 60000);
+    timer.textContent = `Next spin in ${h}h ${m}m`;
+  } else {
+    btn.disabled = false; btn.textContent = '🎰 SPIN!';
+    timer.textContent = 'You have a free spin!';
+  }
+}
+
+function doSpin() {
+  if (!canSpinToday() || spinRunning) return;
+  spinRunning = true;
+  document.getElementById('spin-go-btn').disabled = true;
+  document.getElementById('spin-result').textContent = '';
+
+  const prizeIndex = Math.floor(Math.random() * SEG);
+  const segDeg = 360 / SEG;
+  const targetMod = (337.5 - prizeIndex * segDeg + 360) % 360;
+  const currentMod = ((spinAngle % 360) + 360) % 360;
+  const diff = (targetMod - currentMod + 360) % 360;
+  const finalAngle = spinAngle + 360 * 6 + diff;
+
+  const duration = 4200;
+  let start = null;
+  const fromAngle = spinAngle;
+
+  function ease(t) { return 1 - Math.pow(1 - t, 4); }
+  function animate(ts) {
+    if (!start) start = ts;
+    const t = Math.min((ts - start) / duration, 1);
+    spinAngle = fromAngle + (finalAngle - fromAngle) * ease(t);
+    drawWheel(spinAngle);
+    if (t < 1) { requestAnimationFrame(animate); }
+    else {
+      spinAngle = finalAngle;
+      spinRunning = false;
+      localStorage.setItem('wam-last-spin', new Date().toDateString());
+      applySpinPrize(SPIN_PRIZES[prizeIndex]);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+function applySpinPrize(prize) {
+  const el = document.getElementById('spin-result');
+  if (prize.type === 'coins') {
+    if (!isOwner()) { totalCoins += prize.value; localStorage.setItem('wam-coins', totalCoins); }
+    updateCoinDisplay();
+    el.textContent = `🎉 You won ${prize.value.toLocaleString()} coins!`;
+  } else if (prize.type === 'skin') {
+    if (!ownedItems.includes(prize.value)) {
+      ownedItems.push(prize.value); saveInventory();
+    }
+    el.textContent = `🎉 You unlocked: ${prize.label}!`;
+  } else {
+    el.textContent = `😢 Better luck tomorrow!`;
+  }
+  updateSpinBtn();
+}
+
+// ── BOSS FIGHT ───────────────────────────────────────────────────────────────
+const BOSS_REWARDS = { easy:500, normal:1500, hard:3000 };
+let bossMode = false;
+let bossPhase = 'guards'; // 'guards' | 'king'
+let bossStreak = 0;
+let bossDifficulty = 'normal';
+let bossKingIndex = -1;
+
+function openBossFight() {
+  if (running) return;
+  document.getElementById('boss-intro').style.display = '';
+  document.getElementById('boss-progress-bar-wrap').style.display = 'none';
+  document.getElementById('boss-status').style.display = 'none';
+  document.getElementById('boss-overlay').classList.add('show');
+}
+function closeBossFight() {
+  if (bossMode) endBossFight(false);
+  document.getElementById('boss-overlay').classList.remove('show');
+}
+
+function startBossFight(diff) {
+  bossDifficulty = diff;
+  bossMode = true; bossPhase = 'guards'; bossStreak = 0;
+  document.getElementById('boss-intro').style.display = 'none';
+  document.getElementById('boss-progress-bar-wrap').style.display = '';
+  document.getElementById('boss-status').style.display = '';
+  updateBossStatus();
+  document.getElementById('boss-overlay').classList.remove('show');
+  mode = diff; // reuse speed setting
+  scores = [0,0]; streaks = [0,0]; storyHits = 0;
+  timeLeft = 60; running = true;
+  updateScores(0); updateTimer();
+  document.getElementById('start-btn').disabled = true;
+  const sp = SPEEDS[diff] || SPEEDS.normal;
+  popInterval = setInterval(() => { if (running && bossMode) popMole(); }, sp.interval);
+  timerInterval = setInterval(() => { timeLeft--; updateTimer(); if (timeLeft <= 0) endBossFight(false); }, 1000);
+}
+
+function updateBossStatus() {
+  const el = document.getElementById('boss-status');
+  const bar = document.getElementById('boss-progress-bar');
+  if (bossPhase === 'guards') {
+    el.textContent = `⚔️ Guards: ${bossStreak} / 10`;
+    bar.style.width = (bossStreak / 10 * 100) + '%';
+  } else {
+    el.textContent = `👹 KING MOLE — WHACK IT!`;
+    bar.style.width = '100%';
+  }
+}
+
+function bossWhackGuard(index) {
+  bossStreak++;
+  updateBossStatus();
+  if (bossStreak >= 10) {
+    clearInterval(popInterval);
+    // hide all moles
+    activeMoles.forEach(i => getMole(i)?.classList.remove('up'));
+    activeMoles.clear();
+    bossPhase = 'king';
+    updateBossStatus();
+    setTimeout(spawnKingMole, 600);
+  }
+}
+
+function spawnKingMole() {
+  const available = [];
+  for (let i = 0; i < GRID_SIZE; i++) if (!activeMoles.has(i)) available.push(i);
+  bossKingIndex = available[Math.floor(Math.random() * available.length)];
+  activeMoles.add(bossKingIndex);
+  const mole = getMole(bossKingIndex);
+  mole.classList.add('up', 'king');
+}
+
+function endBossFight(won) {
+  bossMode = false; running = false;
+  clearInterval(timerInterval); clearInterval(popInterval);
+  moleTimers.forEach(clearTimeout);
+  activeMoles.forEach(i => { const m = getMole(i); if(m){m.classList.remove('up','king');} });
+  activeMoles.clear();
+  document.getElementById('start-btn').disabled = false;
+  mode = 'solo';
+  buildGrid();
+
+  const title = document.getElementById('result-title');
+  const resultScores = document.getElementById('result-scores');
+  const resultHS = document.getElementById('result-highscore');
+  document.getElementById('back-to-map-btn').style.display = 'none';
+  document.getElementById('play-again-btn').textContent = '↺ TRY AGAIN';
+
+  if (won) {
+    const reward = BOSS_REWARDS[bossDifficulty] || 1500;
+    title.textContent = '👹 BOSS DEFEATED!';
+    resultScores.innerHTML = `<span style="color:#ffe066">+${reward.toLocaleString()} coins!</span>`;
+    resultHS.innerHTML = '';
+    if (!isOwner()) { totalCoins += reward; localStorage.setItem('wam-coins', totalCoins); }
+    updateCoinDisplay();
+  } else {
+    title.textContent = '💀 DEFEATED!';
+    resultScores.innerHTML = `<span style="color:#ff8a80">Guards beaten: ${bossStreak}/10</span>`;
+    resultHS.innerHTML = `<span style="color:rgba(255,255,255,0.6)">Keep practicing!</span>`;
+  }
+  document.getElementById('result-overlay').classList.add('show');
+}
+
+// ── CODES ────────────────────────────────────────────────────────────────────
+const _d = (s) => atob(s); // decode helper
+const SECRET_CODES = {
+  [_d('V0hBQ0tJVA==')]:    { type:'coins', value:1000 },
+  [_d('QkFUSURBTw==')]:    { type:'coins', value:2000 },
+  [_d('TU9MRUtJTkc=')]:    { type:'coins', value:3000 },
+  [_d('RklSRUhBTU1FUg==')]:{ type:'skin',  value:'fire', stype:'hammer' },
+  [_d('REFSS0ZPUkNF')]:    { type:'skin',  value:'dark', stype:'hammer' },
+  [_d('TEFWQVLJR0c=')]:    { type:'skin',  value:'lava', stype:'theme'  },
+  [_d('VE9QMjBHQU5H')]:    { type:'coins', value:5000 },
+};
+
+// Score milestones → reveal codes (encoded so they're not plain-text in source)
+const MILESTONE_CODES = [
+  { score:50,   encoded:'V0hBQ0tJVA==',    label:'+1,000 coins' },
+  { score:150,  encoded:'QkFUSURBTw==',    label:'+2,000 coins' },
+  { score:300,  encoded:'TU9MRUtJTkc=',    label:'+3,000 coins' },
+  { score:600,  encoded:'RklSRUhBTU1FUg==',label:'🔥 Fire Hammer' },
+  { score:1200, encoded:'REFSS0ZPUkNF',    label:'🌑 Dark Matter Hammer' },
+  { score:2500, encoded:'TEFWQVJJR0c=',    label:'🌋 Lava Theme' },
+];
+
+function checkMilestones(score) {
+  const revealed = JSON.parse(localStorage.getItem('wam-revealed') || '[]');
+  let newUnlock = false;
+  MILESTONE_CODES.forEach(m => {
+    if (score >= m.score && !revealed.includes(m.encoded)) {
+      revealed.push(m.encoded);
+      newUnlock = true;
+    }
+  });
+  if (newUnlock) localStorage.setItem('wam-revealed', JSON.stringify(revealed));
+  return newUnlock;
+}
+
+function getRevealedCodes() {
+  const revealed = JSON.parse(localStorage.getItem('wam-revealed') || '[]');
+  return MILESTONE_CODES.filter(m => revealed.includes(m.encoded)).map(m => ({
+    code: _d(m.encoded),
+    label: m.label,
+    score: m.score,
+  }));
+}
+
+function openCode() {
+  document.getElementById('code-input').value = '';
+  document.getElementById('code-msg').textContent = '';
+  document.getElementById('code-msg').className = 'code-msg';
+  checkTop20Code();
+  renderRevealedCodes();
+  document.getElementById('code-overlay').classList.add('show');
+}
+
+function renderRevealedCodes() {
+  let box = document.getElementById('milestone-codes-box');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'milestone-codes-box';
+    box.style.cssText = 'width:100%;display:flex;flex-direction:column;gap:6px';
+    document.getElementById('top20-code-box').after(box);
+  }
+  const codes = getRevealedCodes();
+  const redeemed = JSON.parse(localStorage.getItem('wam-redeemed') || '[]');
+  if (codes.length === 0) {
+    box.innerHTML = `<div style="font-size:0.78em;color:rgba(255,255,255,0.4);text-align:center">🔒 Reach score milestones to unlock codes!<br><span style="opacity:0.6">Next unlock at score ${MILESTONE_CODES.find(m => !JSON.parse(localStorage.getItem('wam-revealed')||'[]').includes(m.encoded))?.score ?? '???'}</span></div>`;
+    return;
+  }
+  box.innerHTML = `<div style="font-size:0.75em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px">🔓 Your unlocked codes</div>` +
+    codes.map(c => {
+      const used = redeemed.includes(c.code);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,224,102,${used?'0.15':'0.4'});border-radius:10px;padding:7px 12px;${used?'opacity:0.45':''}">
+        <span style="font-size:0.82em;color:rgba(255,255,255,0.7)">${c.label} ${used?'<span style="color:#aaa">(used)</span>':''}</span>
+        <span style="font-family:monospace;font-size:0.9em;font-weight:bold;color:#ffe066;letter-spacing:2px;cursor:pointer" onclick="document.getElementById('code-input').value='${c.code}'">${c.code}</span>
+      </div>`;
+    }).join('');
+}
+function closeCode() { document.getElementById('code-overlay').classList.remove('show'); }
+
+async function checkTop20Code() {
+  const box = document.getElementById('top20-code-box');
+  box.style.display = 'none';
+  if (!currentUsername) return;
+  const lb = await fetchLeaderboardFromJsonbin();
+  const rank = lb.findIndex(e => e.name.toLowerCase() === currentUsername.toLowerCase());
+  if (rank >= 0 && rank < 20) {
+    box.style.display = '';
+    box.innerHTML = `🏆 You're <b style="color:#ffe066">#${rank+1}</b> on the leaderboard!<br>Your exclusive code: <b style="color:#ffe066;letter-spacing:2px">TOP20GANG</b>`;
+  }
+}
+
+function redeemCode() {
+  const code = document.getElementById('code-input').value.trim().toUpperCase();
+  const msg = document.getElementById('code-msg');
+  const redeemed = JSON.parse(localStorage.getItem('wam-redeemed') || '[]');
+
+  if (!code) { msg.className = 'code-msg err'; msg.textContent = 'Enter a code first!'; return; }
+  if (!SECRET_CODES[code]) { msg.className = 'code-msg err'; msg.textContent = '❌ Invalid code.'; return; }
+  if (redeemed.includes(code)) { msg.className = 'code-msg err'; msg.textContent = '❌ Already redeemed!'; return; }
+
+  const prize = SECRET_CODES[code];
+  redeemed.push(code);
+  localStorage.setItem('wam-redeemed', JSON.stringify(redeemed));
+
+  if (prize.type === 'coins') {
+    if (!isOwner()) { totalCoins += prize.value; localStorage.setItem('wam-coins', totalCoins); }
+    updateCoinDisplay();
+    msg.className = 'code-msg ok'; msg.textContent = `✅ Redeemed! +${prize.value.toLocaleString()} coins!`;
+  } else if (prize.type === 'skin') {
+    if (!ownedItems.includes(prize.value)) { ownedItems.push(prize.value); saveInventory(); }
+    msg.className = 'code-msg ok'; msg.textContent = `✅ Skin unlocked: ${prize.value}!`;
+  }
 }
 
 buildGrid();
