@@ -993,6 +993,7 @@
 <div id="game-controls">
   <button class="ctrl-btn" id="start-btn" onclick="startGame()">▶ START</button>
   <button class="ctrl-btn" id="reset-btn" onclick="resetGame()">↺ RESET</button>
+  <button class="ctrl-btn" id="music-btn" onclick="toggleMusic()" style="background:linear-gradient(135deg,#6a35cc,#9b59b6);color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.3)">🔊 Music</button>
 </div>
 
 <div id="grid"></div>
@@ -1327,6 +1328,93 @@ function playMiss() {
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
     osc.start(); osc.stop(ctx.currentTime + 0.1);
   } catch(e){}
+}
+
+// --- Background Music ---
+const N = {
+  C3:130.81, F3:174.61, G3:196.00, A3:220.00,
+  C4:261.63, E4:329.63, G4:392.00, A4:440.00,
+  C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00,
+};
+const MELODY = [
+  N.E5, 0,    N.G5, 0,    N.A5, N.G5, N.E5, 0,
+  N.D5, N.E5, N.F5, 0,    N.E5, 0,    N.C5, 0,
+  N.E5, 0,    N.G5, N.A5, N.G5, 0,    N.E5, 0,
+  N.F5, 0,    N.E5, N.D5, N.C5, N.D5, N.E5, 0,
+];
+const BASS = [
+  N.C3, 0, 0, 0,  N.G3, 0, 0, 0,  N.A3, 0, 0, 0,  N.F3, 0, N.G3, 0,
+  N.C3, 0, 0, 0,  N.G3, 0, 0, 0,  N.A3, 0, 0, 0,  N.F3, 0, N.G3, 0,
+];
+
+const BPM       = 138;
+const STEP_SEC  = 60 / BPM / 4;
+let musicPlaying  = false;
+let musicScheduler = null;
+let musicMasterGain = null;
+let musicStep    = 0;
+let musicNextTime = 0;
+
+function scheduleNote(freq, time, dur, type, vol) {
+  try {
+    const ctx = getAudioCtx();
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(musicMasterGain);
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, time);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur * 0.85);
+    osc.start(time);
+    osc.stop(time + dur);
+  } catch(e) {}
+}
+
+function scheduleMusicLoop() {
+  if (!musicPlaying) return;
+  const ctx = getAudioCtx();
+  while (musicNextTime < ctx.currentTime + 0.2) {
+    const i = musicStep % MELODY.length;
+    if (MELODY[i]) scheduleNote(MELODY[i], musicNextTime, STEP_SEC * 1.6, 'square',   0.06);
+    if (BASS[i])   scheduleNote(BASS[i],   musicNextTime, STEP_SEC * 3.2, 'triangle', 0.10);
+    musicNextTime += STEP_SEC;
+    musicStep++;
+  }
+  musicScheduler = setTimeout(scheduleMusicLoop, 60);
+}
+
+function startMusic() {
+  if (musicPlaying) return;
+  try {
+    const ctx = getAudioCtx();
+    musicMasterGain = ctx.createGain();
+    musicMasterGain.gain.value = 0.45;
+    musicMasterGain.connect(ctx.destination);
+    musicPlaying  = true;
+    musicStep     = 0;
+    musicNextTime = ctx.currentTime + 0.05;
+    scheduleMusicLoop();
+    updateMusicBtn();
+  } catch(e) {}
+}
+
+function stopMusic() {
+  musicPlaying = false;
+  clearTimeout(musicScheduler);
+  if (musicMasterGain) { try { musicMasterGain.disconnect(); } catch(e){} }
+  musicMasterGain = null;
+  updateMusicBtn();
+}
+
+function toggleMusic() {
+  musicPlaying ? stopMusic() : startMusic();
+  localStorage.setItem('wam-music', musicPlaying ? 'on' : 'off');
+}
+
+function updateMusicBtn() {
+  const btn = document.getElementById('music-btn');
+  if (btn) btn.textContent = musicPlaying ? '🔊 Music' : '🔇 Music';
 }
 
 // --- Mode ---
@@ -1884,7 +1972,7 @@ async function showLeaderboard() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="lb-rank ${rankClass}">${medal}</td>
-      <td style="text-align:left">${escapeHtml(entry.name)}${entry.vip ? '<span class="vip-badge">👑</span>' : ''}</td>
+      <td style="text-align:left">${escapeHtml(entry.name)}${(entry.vip || (entry.name.toLowerCase() === currentUsername.toLowerCase() && isVip)) ? '<span class="vip-badge">👑</span>' : ''}</td>
       <td style="font-weight:bold;color:#ffe066">${entry.score}</td>
       <td style="font-size:0.75em;color:rgba(255,255,255,0.55)">${entry.mode}</td>`;
     tbody.appendChild(tr);
@@ -1913,6 +2001,7 @@ buildGrid();
 setMode('solo');
 updateCoinDisplay();
 applyEquipped();
+if (localStorage.getItem('wam-music') === 'on') startMusic();
 
 document.getElementById('username-display').textContent = currentUsername || '—';
 promptUsername();
